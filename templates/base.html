@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--Import materialize.css-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- <link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/> -->
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+         
+         {% block scripts %}
+         {% endblock scripts %}
+        <title>{% block title%}{% endblock %}</title>
+</head>
+<body>
+    
+  <!-- Tap Target Structure -->
+  <div class="tap-target" data-target="menu">
+    <div class="tap-target-content">
+      <h5>Title</h5>
+      <p>A bunch of text</p>
+      <h5>Title</h5>
+      <p>A bunch of text</p>
+    </div>
+  </div>
+  
+    {% block content%}
+    
+    {% endblock %}
+
+
+    <!--Import jQuery before materialize.js-->
+    {% block footer %}    
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <!-- <script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script> -->
+        <!-- <script src="{% static 'scripts.js' %}"></script> -->
+    {% endblock footer %}
+
+</body>
+</html>

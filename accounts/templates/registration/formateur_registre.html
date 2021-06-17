@@ -1,0 +1,32 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block scripts %}
+
+{% endblock %}
+
+{% block content%}
+<div class="container center-align">
+    <form action="{% url 'formateur_register' %}" method="POST" novalidate>
+        {% csrf_token %}
+           {% for field in form.visible_fields %}
+             <div class="">
+                 {{ field.label_tag }}
+                    {% render_field field class="" %}
+                      {% for error in field.errors %}
+                        <span style="color:red">{{ error }}</span>
+                      {% endfor %}
+           {% endfor %}
+               <input type="submit" value="Register" class="btn btn-block btn-primary">
+             </div>
+      </form>
+</div>
+{% block footer %}
+<script>
+
+
+</script>
+
+{% endblock footer %}  
+{% endblock %}

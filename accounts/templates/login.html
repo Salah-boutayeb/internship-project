@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <script src="{% static 'stages/script.js' %}" defer></script>
+{% endblock %}
+{% block content%}
+<div class="container  ">
+      <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+        <h5>s'enregistrer comme formateur</h5>
+        <a href="/formateur_register/" class="">as formateur</a>
+        <h5>s'enregistrer comme stagiaire</h5>
+        <a href="/stagiaire_register/" class="">as stagiaire</a>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+  </div>
+
+    
+    
+    <div class="card center-align">
+        
+        <div class="card-content">
+            <form method="post" action="" class="" >   
+                {% csrf_token %}
+                    <div class="center ">
+                        <div class="user">
+                            <img src="{% static 'img/user.png' %}" alt="user" width="150" srcset="">
+                            
+                        </div>
+                        <hr>
+                        <div class="center">
+                            
+                            <h1> Log<span class=" white-text light-blue lighten-2">in</span></h1>
+                        
+                        </div>
+                            
+        
+                        <div class="row center">
+                            <div class="input-field col s12">
+                                <label for="exampleInputEmail1">Email address</label>
+                                <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="username...">
+                                
+                            </div>
+
+                        </div>
+                        <div class="row center">
+                            <div class="input-field col s12">
+                                <label for="exampleInputPassword1">Password</label>
+                            
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
+                            </div>
+
+                        </div>
+                        {% for message in messages %}
+                                <p id="messages">{{message}}</p>
+                            {% endfor %}
+                        <div class="btn1">
+                            <button type="submit" value="login" class="btn btn-submit light-blue lighten-2 ">Sign in!</button>
+                            <input type="hidden" name="next" value="{{ next }}">
+                        </div>
+                    </div>
+                    <p>If you don't have an account  <a class="waves-effect waves-light  modal-trigger" href="#modal1">signup</a></p>
+                    
+            </form>
+        </div>
+        
+<!--         <div class="col s6 ">
+            <div class="card-content">
+                <form method="post" action="" >   
+                    {% csrf_token %}
+                        <div class="center ">
+                            <div class="user">
+                                <img src="{% static 'img/user.png' %}" alt="user" width="150" srcset="">
+                                
+                            </div>
+                            <hr>
+                            <div class="center">
+                                
+                                <h1> login</h1>
+                               
+                            </div>
+                            
+        
+                        <div class="">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="username...">
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
+                        </div>
+                        {% for message in messages %}
+                                <p id="messages">{{message}}</p>
+                            {% endfor %}
+                        <div class="btn1">
+                            <button type="submit" value="login" class="btn btn-outline-info">Sign in!</button>
+                            <input type="hidden" name="next" value="{{ next }}">
+                            </div>
+                        </div>
+                        <p>If you don't have an account  <a href="/signup">Sign up</a></p>
+                        
+                </form>
+            </div>
+            
+        </div> -->
+
+
+</div>
+    
+{% endblock %}

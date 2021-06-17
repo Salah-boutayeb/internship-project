@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="{% static 'stages/stylesheet.css' %}">
+    <script src="{% static 'stages/script.js' %}" defer></script>
+{% endblock %}
+{% block content%}
+<div class="container  z-depth-5">
+  <!-- <div class="bg-icon">
+    <i class="large material-icons blue-grey insert_chart">insert_chart</i>
+  </div> -->
+  
+    <div class="card  darken-1 ">
+      <div class="card-content ">
+        <form action="/create_stage/" method="POST" class="">
+          {% csrf_token %} 
+            <div class="row">
+              <div class="input-field col s6">
+                <input placeholder="Sujet du stage" id="stage_title" type="text" class="validate" name="stage_title">
+                <label for="stage_title">Sujet :</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <textarea id="description-stage" class="materialize-textarea" name="description-stage"></textarea>
+                <label for="description-stage">Description du stage</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <textarea id="description-stage" class="materialize-textarea" name="cahiercharge-stage"></textarea>
+                <label for="cahiercharge-stage">cahier des charges</label>
+              </div>
+            </div>
+            {% for message in messages %}
+				    	<p id="messages">{{message}}</p>
+				    {% endfor %}
+            <div class="center">
+              <button class="btn waves-effect waves-light" type="submit" >Submit
+                <i class="material-icons right">send</i>
+              </button>
+            </div>
+            
+          
+            
+        </form> 
+      </div> 
+
+    </div>
+</div>
+    
+{% endblock %}

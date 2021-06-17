@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <script src="{% static 'stages/script.js' %}" defer></script>
+{% endblock %}
+{% block content%}
+<div class="container  ">
+  <div class="fixed-action-btn">
+    <a id="menu" href="/create_stage/" class="waves-effect btn-large waves-light btn btn-floating"  ><i class="material-icons">add</i></a>
+</div>
+<div class="row center-align ">
+    <div class="center-align">
+      <div class="card blue-grey darken-3  ">
+        <div class="card-content white-text">
+          <span class="card-title">Les Demandes Stages</span>
+          {% if demandes %}
+          <table>
+            <thead>
+              <tr>
+                  <th>stage</th>
+                  <th>stagiaire</th>
+                  
+                  <th>accepter</th>
+              </tr>
+            </thead>
+    
+            <tbody>
+                {% for demande in demandes %}
+              <tr>
+                
+                <td>{{demande.stage.sujet}}</td>
+                <td>{{demande.stagiaire}}</td>
+                
+                <td>
+                    <form action="/formateur/demandes/" method="POST">
+                    {% csrf_token %}
+                     <button type="submit" class="btn" value="{{demande.id}}" name="id"><i class="material-icons">send</i></button>
+                    </form>
+               </td>
+              
+              </tr>
+              {% endfor %}
+            
+            </tbody>
+          </table>
+          {% else %}
+          <div>
+            <h3 class="center-align white-text ">aucune demande trouvé pour l'instant !!! :(</h3>
+          </div>
+        
+          {% endif %}
+        </div>
+        <div class="card-action">
+          <a href="#">This is a link</a>
+          <a href="#">This is a link</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+    {% block footer %}
+    <script>
+        const accepter=()=>{
+            $.ajax({
+                
+            })
+        }
+    </script>
+    {% endblock footer %}
+{% endblock %}
