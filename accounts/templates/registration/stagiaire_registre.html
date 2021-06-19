@@ -7,25 +7,28 @@
 {% endblock %}
 
 {% block content%}
-<div class="container center">
-
-    <div class="card ">
-        <div class="card-content">
-            <form action="{% url 'stagiaire_register' %}" method="POST" novalidate enctype="multipart/form-data">
-                {% csrf_token %}
-                {% for field in form.visible_fields %}
-                <div class="">
-                    {{ field.label_tag }}
-                       {% render_field field class="" %}
-                         {% for error in field.errors %}
-                           <span style="color:red">{{ error }}</span>
-                         {% endfor %}
-                    {% endfor %}
-              <input type="submit" value="Register" class="btn btn-block btn-primary">
-
-            </form>
-        </div>
-    </div>
+<div class="container center-align">
+  <div class="card ">
+    <form action="{% url 'stagiaire_register' %}" method="POST" novalidate>
+        {% csrf_token %}
+           {% for field in form.visible_fields %}
+              <div class="card-content">
+                <div class="row">
+                  <div class="input-field col s12">
+                    {% render_field field class="validate" %}
+                    <label for="email">{{ field.label_tag }}</label>
+                  </div>
+                </div>
+                {% for error in field.errors %}
+                  <span class="helper-text" data-error="wrong" data-success="right">{{error}}</span>
+                {% endfor %}
+              </div>
+             {% endfor %}
+      <div class="card-action ">
+        <input type="submit" value="Register" class="btn  btn-primary">
+      </div>
+    </form>
+  </div>
 </div>
 {% block footer %}
 {% endblock footer %}  

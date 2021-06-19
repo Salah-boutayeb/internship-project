@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('stages.urls')),
     path('',include('accounts.urls')),
-    path('formateur/',include('formateurs.urls')),
+    path('',include('formateurs.urls')),
 ]
 urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns+= static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

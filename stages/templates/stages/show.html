@@ -3,10 +3,12 @@
 
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'stages/stylesheet.css' %}">
+    <script src="{% static 'stages/script.js' %}" defer></script>
 {% endblock %}
 
 {% block content%}
 <div class="container center-align">
+  {% if stages %}
   {% for stage in stages %}
     <div class="row">
       <div class="col s12 ">
@@ -26,9 +28,21 @@
       </div>
     </div>
   {% endfor %}
+  {% else %}
+  <div class="row">
+    <div class="col s12 ">
+      <div class="card  darken-1">
+        <div class="card-content blue-grey-text">
+          <h1 class="card-content">aucun stage trouvé</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
 </div>
 {% block footer %}
-<script src="{% static 'stages/script.js' %}" defer ></script>
+
 
 {% endblock footer %}  
 {% endblock %}

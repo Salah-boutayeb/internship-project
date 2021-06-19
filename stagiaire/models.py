@@ -15,8 +15,8 @@ class Stagiaire(models.Model):
         return self.user.username
 
 class Document(models.Model):
-    stagiaire= models.ForeignKey(Stagiaire,on_delete=models.CASCADE)
-    cv= models.FileField( null=True)
-    rapport = models.FileField( null=True)
+    stagiaire= models.OneToOneField(Stagiaire,on_delete=models.CASCADE ,primary_key = True)
+    cv= models.FileField( blank=True)
+    rapport = models.FileField( blank=True)
     def __str__(self):
         return self.stagiaire.user.username + ": documents "

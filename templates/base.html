@@ -6,38 +6,108 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--Import materialize.css-->
+        <link rel="stylesheet" href="{% static 'style.css' %}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <!-- <link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/> -->
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-         
          {% block scripts %}
+
          {% endblock scripts %}
         <title>{% block title%}{% endblock %}</title>
 </head>
 <body>
-    
-  <!-- Tap Target Structure -->
-  <div class="tap-target" data-target="menu">
-    <div class="tap-target-content">
-      <h5>Title</h5>
-      <p>A bunch of text</p>
-      <h5>Title</h5>
-      <p>A bunch of text</p>
+
+
+  <nav>
+    <div class="container">
+    <div class="nav-wrapper">
+        
+            <a href="/" class="brand-logo">Logo</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/">home</a></li>
+                {% if user.is_formateur and user.is_authenticated %}
+                <li><a href="#">mon profile</a></li>
+            
+                <li><a href="#"> mes stages</a></li>
+                <li><a href="/stagiaires"> mes stagiaires</a></li>
+                <li><a href="/demandes">Demandes</a></li>
+                {% elif user.is_stagiaire and user.is_authenticated%}
+                <li><a href="#">mon profile</a></li>
+                <li><a href="#"> mon stage </a></li>
+                {% endif %}
+            
+                {% if user.is_authenticated %}
+                <li><a href="/logout">Logout</a></li>
+                {% else %}
+                <li><a href="/login">login</a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+                {% endif %}
+              
+      
+            </ul>
+        </div>
+   
     </div>
-  </div>
-  
+  </nav>
+      <!-- Dropdown Structure -->
+<ul id="dropdown1" class="dropdown-content">
+    <li><a href="/formateur_register">formateur </a></li>
+    <li><a href="/stagiaire_register">stagiaire</a></li>
+</ul>
+<ul id="dropdown2" class="dropdown-content">
+    <li><a href="/formateur_register">formateur </a></li>
+    <li><a href="/stagiaire_register">stagiaire</a></li>
+</ul>
+
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="/">home</a></li>
+    {% if user.is_formateur and user.is_authenticated %}
+    <li><a href="#">mon profile</a></li>
+
+    <li><a href="#"> mes stages</a></li>
+    <li><a href="/stagiaires"> mes stagiaires</a></li>
+    <li><a href="/demandes">Demandes</a></li>
+    {% elif user.is_stagiaire and user.is_authenticated%}
+    <li><a href="#">mon profile</a></li>
+    <li><a href="#"> mon stage </a></li>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <li><a href="/logout">Logout</a></li>
+    {% else %}
+    <li><a href="/login">login</a></li>
+    <li><a class="dropdown-trigger" href="#!" data-target="dropdown2">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+    {% endif %}
+
+
+  </ul>
+
+
     {% block content%}
-    
+
     {% endblock %}
+ <div class="fixed-action-btn">
+  <a class="btn-floating btn-large red">
+    <i class="large material-icons">mode_edit</i>
+  </a>
+  <ul>
+    <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+    <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+    <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+    <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+  </ul>
+</div>
+    
+   
 
-
-    <!--Import jQuery before materialize.js-->
-    {% block footer %}    
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <!-- <script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script> -->
-        <!-- <script src="{% static 'scripts.js' %}"></script> -->
+   
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{% static 'scripts.js' %}"></script>
+    {% block footer %}   
+     
+     
     {% endblock footer %}
-
 </body>
 </html>

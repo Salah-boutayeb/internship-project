@@ -1,5 +1,3 @@
-
-
 from django.shortcuts import redirect, render
 from .models import *
 from formateurs.models import Formateur
@@ -17,28 +15,6 @@ def show(request):
        
     return render(request,'stages/show.html',{'stages':stages})
 
-def create_stage(request):
-    if request.user.is_authenticated:
-	
-        if request.POST:
-
-            owner_name= request.user
-            obj=request.POST
-            if obj['stage_title'] and obj['description-stage'] and obj['cahiercharge-stage']:
-                formateur =Formateur.objects.get(user=owner_name)
-                
-                stage=Stage(sujet=obj['stage_title'],description_du_stage=obj['description-stage'].replace('\n',' '),formateure=formateur)
-                stage.save()
-                
-                charges=CahierCharge(stage=stage,cahierCharge=obj['cahiercharge-stage'].replace('\n',' '))
-                charges.save()
-            else:
-                messages.info(request, "s'il vous plait ajouter un stage !!!")
-                print('empty')
-            return render(request,'stages/create_taches.html',context={'charges':charges})
-        return render(request,'stages/create_stage.html')
-    else:
-        return redirect(login_required)    
 
 def create_axe_tache(request):
     if request.user.is_authenticated:
@@ -83,15 +59,17 @@ def stage_taches(request,id):
     else:
         return redirect(login_required)       
 
+
 def get_stage_details(request,id):
     stage=Stage.objects.get(pk=id)
     cahiercharge=stage.cahiercharge
     
     context={'stage':stage,'charge':cahiercharge}
     return render(request,'stages/stage_details.html',context )
+
+
 def demande_stage(request):
-    if request.user.is_authenticated:
-        
+    if request.user.is_authenticated and request.user.is_stagiaire:
         stagiaire=Stagiaire.objects.get(user=request.user)
         stage=Stage.objects.get(pk=request.POST['id'])
         

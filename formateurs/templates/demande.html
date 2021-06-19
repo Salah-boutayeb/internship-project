@@ -3,13 +3,14 @@
 
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
-    <script src="{% static 'stages/script.js' %}" defer></script>
+    <script src="" defer></script>
 {% endblock %}
-{% block content%}
+{% block content %}
 <div class="container  ">
   <div class="fixed-action-btn">
     <a id="menu" href="/create_stage/" class="waves-effect btn-large waves-light btn btn-floating"  ><i class="material-icons">add</i></a>
-</div>
+  </div>
+  
 <div class="row center-align ">
     <div class="center-align">
       <div class="card blue-grey darken-3  ">
@@ -20,8 +21,7 @@
             <thead>
               <tr>
                   <th>stage</th>
-                  <th>stagiaire</th>
-                  
+                  <th>stagiaire</th>  
                   <th>accepter</th>
               </tr>
             </thead>
@@ -47,7 +47,7 @@
           </table>
           {% else %}
           <div>
-            <h3 class="center-align white-text ">aucune demande trouvé pour l'instant !!! :(</h3>
+            <h3 class="center-align white-text ">aucune demande trouvée pour l'instant !!! :(</h3>
           </div>
         
           {% endif %}
