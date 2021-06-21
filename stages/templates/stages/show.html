@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block content%}
+  
+
+  
 <div class="container center-align">
   {% if stages %}
   {% for stage in stages %}
@@ -18,11 +21,40 @@
               <p>{{stage.description_du_stage}}</p>
           </div>
           <div class="card-action">
-              <!-- <a href="stage/{{stage.id}}">See Details</a> -->
-              <form action="stage/demande/" method="post">
+            {% if user.is_authenticated and  user.is_stagiaire  %}
+                {% if user.stagiaire.is_active %}
+                <a href="stage/{{stage.id}}">See Details</a>
+                
+                {% else %}
+                <a onclick="M.toast({html: '!attention' ,classes: 'rounded'})" class="waves-effect waves-light btn modal-trigger" href="#modal1">demander ce stage</a>
+                    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4>completer votre admission</h4>
+        <p>Veuillez saisir voter CV </p>
+        <form style="height: 80px;" action="stage/demande/" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="file-field input-field">
+            <div class="btn">
+              <span>File</span>
+              <input type="file" name="cv">
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" type="text" placeholder="Upload one or more files">
+            </div>
+          </div>
+          <div class="center-align">
+            <button type="submit" value="{{stage.id}}" name="id" class="btn">demande</button> 
+          </div>
+        </form>
+      </div>
+    </div>
+                {% endif %}
+              <!-- <form action="stage/demande/" method="post">
               {% csrf_token %}
-              <button type="submit" value="{{stage.id}}" name="id" class="btn">demande</button>
-              </form>
+              <button type="submit" value="{{stage.id}}" name="id" class="btn">demande</button> -->
+            {% endif %} 
+            </form>
           </div>
         </div>
       </div>

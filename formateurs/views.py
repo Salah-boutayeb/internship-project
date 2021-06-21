@@ -27,23 +27,22 @@ def show_stagiaires(request):
         data=[]
         stagiaires=Stagiaire.objects.all()
         for stagiaire in stagiaires:
-            stg={}
-            stg['id']=stagiaire.user_id
-            stages=stagiaire.stage_set.all()
-            
-            for stage in stages:
-                    stg['stage']=stage.sujet
-            stg["name"]=stagiaire.user
-            if Document.objects.all():
-                document=Document.objects.get(stagiaire_id=stagiaire.user_id)
-                stg["cv"]=document.cv      
-            data.append(stg)   
+            if stagiaire.is_active:
+                stg={}
+                stg['id']=stagiaire.user_id
+                stages=stagiaire.stage_set.all()
+                for stage in stages:
+                        stg['stage']=stage.sujet
+                stg["name"]=stagiaire.user
+                if Document.objects.all():
+                    document=Document.objects.get(stagiaire_id=stagiaire.user_id)
+                    stg["cv"]=document.cv      
+                data.append(stg)   
         context={'stagiaires':data}         
         print(context)
         return render(request,'stagiaires.html',context)
     else:
         return redirect(login_required)
-
 
 def create_stage(request):
     if request.user.is_authenticated and request.user.is_formateur :
@@ -58,7 +57,8 @@ def create_stage(request):
                 
                 charges=CahierCharge(stage=stage,cahierCharge=obj['cahiercharge-stage'].replace('\n',' '))
                 charges.save()
-                return render(request,'stages/create_taches.html',context={'charges':charges})
+                return redirect('/')
+                # return render(request,'stages/create_taches.html',context={'charges':charges})
             else:
                 messages.info(request, "s'il vous plait ajouter un stage !!!")
         return render(request,'create_stage.html')

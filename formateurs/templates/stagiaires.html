@@ -31,10 +31,10 @@
               <tr>
                 <td>{{stagiaire.stage}}</td>
                 <td>{{stagiaire.name}}</td>
-                <td><a href="{{ stagiaire.cv.url }}" download>{{ stagiaire.cv }}</a></td>
+                <td><a href="" download>{{ stagiaire.cv }}</a></td>
                 
                 <td>
-                    <form action="/formateur/stagiaires/" method="POST">
+                    <form action="/stagiaires/" method="POST">
                     {% csrf_token %}
                      <button type="submit" class="btn" value="{{stagiaire.user_id}}" name="id"><i class="material-icons">send</i></button>
                     </form>

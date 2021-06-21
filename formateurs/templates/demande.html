@@ -21,35 +21,32 @@
             <thead>
               <tr>
                   <th>stage</th>
-                  <th>stagiaire</th>  
+                  <th>stagiaire</th> 
+                  <th>cv</th> 
                   <th>accepter</th>
               </tr>
             </thead>
-    
             <tbody>
                 {% for demande in demandes %}
               <tr>
-                
                 <td>{{demande.stage.sujet}}</td>
                 <td>{{demande.stagiaire}}</td>
-                
+                <td><a href="" download>{{ demande.stagiaire.document.cv }}</a></td>
                 <td>
-                    <form action="/formateur/demandes/" method="POST">
+                    <form action="/demandes/" method="POST">
                     {% csrf_token %}
                      <button type="submit" class="btn" value="{{demande.id}}" name="id"><i class="material-icons">send</i></button>
                     </form>
                </td>
-              
               </tr>
               {% endfor %}
-            
             </tbody>
+            
           </table>
           {% else %}
           <div>
             <h3 class="center-align white-text ">aucune demande trouvée pour l'instant !!! :(</h3>
           </div>
-        
           {% endif %}
         </div>
         <div class="card-action">
@@ -64,11 +61,10 @@
 </div>
     {% block footer %}
     <script>
-        const accepter=()=>{
-            $.ajax({
-                
-            })
-        }
+      
+
+
+
     </script>
     {% endblock footer %}
 {% endblock %}

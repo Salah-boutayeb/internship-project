@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="{% static 'scriptsfunc.js' %}" defer></script>
+{% endblock %}
+{% block content%}
+<div class="container">
+      <!-- Modal Trigger -->
+    <!-- Modal Structure -->
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <h4>ajouer les axes du voter stage</h4>
+            <form action="/create_tache/" method="POST">
+                {% csrf_token %}
+                <div id="box-tache-title">
+
+                </div>
+                <button class="btn" type="submit" id="sendTaches" name="axe"><i class="material-icons">send </i></button>
+            </form>
+        </div>
+        
+        <div class="modal-footer">
+            
+            
+            <button class="btn" onclick="addtache()"><i class="material-icons">add</i></button>
+            <button class="btn" onclick="removetache()"><i class="material-icons">remove</i></button>
+        </div>
+      </div>
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4>ajouer les axes du voter stage</h4>
+        <form action="/create_axes/" method="POST">
+            {% csrf_token %}
+            <div id="box">
+
+            </div>
+            <button class="btn" type="submit" ><i class="material-icons">send</i></button>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" onclick="addAxe()"><i class="material-icons">add</i></button>
+        <button class="btn" onclick="removeAxe()"><i class="material-icons">remove</i></button>
+    </div>
+  </div>
+    <div class="row">
+        <div class="col s12  l4">
+            <h2>{{ stage.sujet }}</h2>
+            <p>{{cahiercharge}}</p>
+        </div>
+        <div class="col s12  l8">
+            <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card">
+            <div class="row">
+                <div class="clo center-align">
+                    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">creer axe</a>
+                </div>
+            </div>
+            <div class="card-content details">
+                {% for key,value in axes.items %}
+                {% if key %}
+                <div class="row">
+                    <div class="col l6 s8">
+                         <h3>{{ key }}</h3>    
+                    </div>
+                    <div class="col l6 s4">
+                    <button type="" data-target="modal2" class="btn  waves-effect waves-light modal-trigger" value="{{key}}" onclick="getAxe(this.value)"><i class="material-icons">add</i></button>
+                    </div>
+                </div>
+                {% else %}
+                {% endif %}
+                <ul class=" collapsible popout z-depth-5">
+                    {% if value %}
+                    {% for tache in value %}
+                    
+                    <li class="active">
+                    <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{key}}</div>
+                    <div class="collapsible-body">
+                        <form action=""><input type="checkbox" onclick="validate()" value="{{tache.id}}" {% if tache %} /></form<span>{{tache.descrptionTache}}</span></div>
+                    </li>
+                    {% endfor %}
+                    
+                    {% endif %}
+                </ul>
+                     {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

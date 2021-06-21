@@ -10,7 +10,7 @@ class Stagiaire(models.Model):
     phone_number = models.CharField(max_length=20)
     specialite = models.CharField(max_length=20 ,null=True )
     is_active = models.BooleanField(default=False)
-    formateur = models.ForeignKey(Formateur, null=True ,on_delete = models.CASCADE)
+    formateur = models.ForeignKey(Formateur, blank=True,null=True ,on_delete = models.CASCADE)
     def __str__(self) -> str:
         return self.user.username
 

@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from .models import *
 from formateurs.models import Formateur
 
-from stagiaire.models import Stagiaire
+from stagiaire.models import Document, Stagiaire
 from django.http import JsonResponse
 from django.contrib import messages
 # Create your views here.
@@ -69,10 +69,16 @@ def get_stage_details(request,id):
 
 
 def demande_stage(request):
-    if request.user.is_authenticated and request.user.is_stagiaire:
+    if request.POST and request.user.is_authenticated and request.user.is_stagiaire:
         stagiaire=Stagiaire.objects.get(user=request.user)
         stage=Stage.objects.get(pk=request.POST['id'])
-        
+        print(request.FILES["cv"])
+        print(stagiaire)
+        print(stage)
+        document=Document()
+        document.stagiaire=stagiaire
+        document.cv=request.FILES["cv"]
+        document.save()
         demande=Demande(stagiaire=stagiaire,stage=stage)
         demande.save()
         return redirect('/')
