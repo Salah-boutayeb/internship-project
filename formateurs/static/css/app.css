@@ -23,4 +23,7 @@ a {
     text-decoration:#29abe0 ;
     
 }
-
+.delete-form{
+    display: inline;
+    height: 20px;
+}

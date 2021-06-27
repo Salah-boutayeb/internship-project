@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block scripts %}
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'css/App.css' %}">
     <script src="{% static 'stages/script.js' %}" defer></script>
 {% endblock %}
 {% block content%}
@@ -11,9 +11,9 @@
   <div id="modal1" class="modal">
     <div class="modal-content">
         <h5>s'enregistrer comme formateur</h5>
-        <a href="/formateur_register/" class="">as formateur</a>
+        <a href="/accounts/formateur_register/" class="">as formateur</a>
         <h5>s'enregistrer comme stagiaire</h5>
-        <a href="/stagiaire_register/" class="">as stagiaire</a>
+        <a href="/accounts/stagiaire_register/" class="">as stagiaire</a>
     </div>
     <div class="modal-footer">
 
@@ -35,7 +35,7 @@
                         <hr>
                         <div class="center">
                             
-                            <h4> Log<span class=" white-text light-blue lighten-2">in</span></h4>
+                            <h4><span  class=" log"> Log</span><span style="border-radius:9px" class="in">in</span></h4>
                         
                         </div>
                             
@@ -54,10 +54,12 @@
                             
                                 <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
                             </div>
-
+                            <div class="input-field col s12">
+                                <a href="/account/reset_password/">forgot your password ?</a>
+                             </div>
                         </div>
                         <div >
-                            <p>If you don't have an account  <a class="waves-effect waves-light  modal-trigger" href="#modal1">signup</a></p>
+                            <p>If you don't have an account  <a class="waves-effect waves-light  modal-trigger" href="#modal1" style="margin-top: -6px;"><u>signup</u></a></p>
     
                         </div>
                         {% for message in messages %}
@@ -65,7 +67,7 @@
                             {% endfor %}
 
                         <div class="btn1">
-                            <button type="submit" value="login" class="btn btn-submit light-blue lighten-2 ">Log in</button>
+                            <button type="submit" value="login" class="btn btn-submit  lighten-2 ">Log in</button>
                             <input type="hidden" name="next" value="{{ next }}">
                         </div>
                     </div>
@@ -74,47 +76,7 @@
             </form>
         </div>
         
-<!--         <div class="col s6 ">
-            <div class="card-content">
-                <form method="post" action="" >   
-                    {% csrf_token %}
-                        <div class="center ">
-                            <div class="user">
-                                <img src="{% static 'img/user.png' %}" alt="user" width="150" srcset="">
-                                
-                            </div>
-                            <hr>
-                            <div class="center">
-                                
-                                <h4> login</h4>
-                               
-                            </div>
-                            
-        
-                        <div class="">
-                            <label for="username">Email address</label>
-                            <input type="text" class="form-control" name="username" id="username" aria-describedby="emailHelp" placeholder="username...">
-                            
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            
-                            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
-                        </div>
-                        {% for message in messages %}
-                                <p id="messages">{{message}}</p>
-                            {% endfor %}
-                        <div class="btn1">
-                            <button type="submit" value="login" class="btn btn-outline-info">Sign in!</button>
-                            <input type="hidden" name="next" value="{{ next }}">
-                            </div>
-                        </div>
-                        <p>If you don't have an account  <a href="/signup">Sign up</a></p>
-                        
-                </form>
-            </div>
-            
-        </div> -->
+
 
 
 </div>

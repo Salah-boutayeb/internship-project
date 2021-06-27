@@ -10,4 +10,5 @@ urlpatterns=[
     path('stage/<int:id>',get_stage_details),
     path('stage/demande/',demande_stage),
     
+    
 ]

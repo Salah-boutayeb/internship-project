@@ -9,12 +9,45 @@
 <div class="container  z-depth-5">  
     <div class="card  darken-1 ">
       <div class="card-content ">
-        <form action="/create_stage/" method="POST" class="">
+        <form action="/formateur/create_stage/" method="POST" class="">
           {% csrf_token %} 
             <div class="row">
               <div class="input-field col s6">
-                <input placeholder="Sujet du stage" id="stage_title" type="text" class="validate" name="stage_title">
-                <label for="stage_title">Sujet :</label>
+                <input placeholder="Sujet du stage" id="stage_sujet" type="text" class="validate" name="stage_sujet">
+                <label for="stage_sujet">Sujet :</label>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Type du stage" id="stage_type" type="text" class="validate" name="stage_type">
+                <label for="stage_tipe">Type du stage :</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <input placeholder="durée du stage" id="duree" type="text" class="validate" name="duree">
+                <label for="duree">Durée du stage</label>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Nombre du stagiaires" id="Nombre_du_stagiaires" type="number" class="validate" name="Nombre_du_stagiaires">
+                <label for="Nombre_du_stagiaires">Nombre du stagiaires</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <p>
+                  <label>
+                    <input name="remunere" type="radio" checked value="False" />
+                    
+                    <span>Non rémunéré</span>
+                  </label>
+                </p>
+              </div>
+              <div class="input-field col s6">  
+                <p>
+                  <label>
+                    <input name="remunere" type="radio" value="True"/>
+                    <span>Rémunéré</span>
+                  </label>
+                </p>
               </div>
             </div>
             <div class="row">

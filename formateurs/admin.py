@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
-admin.site.register(Formateur)
+
+admin.site.register(ProfileFormateur)
 
 
 # Register your models here.

@@ -1,5 +1,4 @@
 from django.contrib import admin
 from .models import *
-admin.site.register(Stagiaire)
-admin.site.register(Document)
+admin.site.register(ProfileStagiaire)
 # Register your models here.

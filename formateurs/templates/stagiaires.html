@@ -12,49 +12,53 @@
   </div>
 <div class="row center-align ">
     <div class="center-align">
-      <div class="card blue-grey darken-3  ">
-        <div class="card-content white-text">
+      <div class=" card  darken-4   ">
+        <div class="card-content">
           <span class="card-title">Les Stagiaires</span>
-          {% if stagiaires %}
-          <table>
+          {% if stages %}
+          <table class="responsive-table centered">
             <thead>
               <tr>
+                <th>stagiaire</th>
                   <th>stage</th>
-                  <th>stagiaire</th>
+                  
                   <th>cv</th>
-                  <th>accepter</th>
+                  <th>son progrès</th>
+                  <th>rapport</th>
+                  <th >ACTION</th>
               </tr>
             </thead>
     
             <tbody>
-                {% for stagiaire in stagiaires %}
-              <tr>
-                <td>{{stagiaire.stage}}</td>
-                <td>{{stagiaire.name}}</td>
-                <td><a href="" download>{{ stagiaire.cv }}</a></td>
+                {% for stage in stages %}
+              <tr id="stagiaire{{stage.stagiaire.id}}">
+                <td><a href="/accounts/profile/{{stage.stagiaire.user.username}}"> {{stage.stagiaire.user.last_name}} {{stage.stagiaire.user.first_name}}</a></td>
+                <td>{{stage}}</td>
                 
+                <td><a href="{{ stage.stagiaire.document.cv.url }}" >cv {{stage.stagiaire}}</a></td>
+                <td>{{stage.stagiaire.score}}%</td>
+                {% if stage.stagiaire.document.rapport %}
+                <td><a href="{{ stage.stagiaire.document.rapport.url }}" >rapport {{stage.stagiaire}</a></td>
+                {% else %}
+                <td>pas encore</td>
+                {% endif %}
                 <td>
-                    <form action="/stagiaires/" method="POST">
-                    {% csrf_token %}
-                     <button type="submit" class="btn" value="{{stagiaire.user_id}}" name="id"><i class="material-icons">send</i></button>
-                    </form>
+                 <button type="button" class="btn red" value="{{stagiaire.user_id}}" name="id"><i class="material-icons ">remove</i></button> 
+                 <button type="button" class="btn" value="{{stagiaire.user_id}}" {% if stage.stagiaire.score is not 100 %} disabled {% endif %} name="id"><i class="material-icons">send</i></button> 
                </td>
-              
               </tr>
               {% endfor %}
-            
             </tbody>
           </table>
           {% else %}
           <div>
-            <h3 class="center-align white-text ">aucun stagiaire stouvé!!! :( voir les demandes <a href="/demandes/">demandes</a></h3>
+            <h3 class="center-align white-text ">aucun stagiaire stouvé !!! :( voir les demandes <a href="/formateur/demandes/">demandes</a></h3>
           </div>
         
           {% endif %}
         </div>
         <div class="card-action">
-        <!--   <a href="#">This is a link</a>
-          <a href="#">This is a link</a> -->
+        
         </div>
       </div>
     </div>
@@ -64,11 +68,7 @@
 </div>
     {% block footer %}
     <script>
-        const accepter=()=>{
-            $.ajax({
-                
-            })
-        }
+        
     </script>
     {% endblock footer %}
 {% endblock %}

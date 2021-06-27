@@ -1,6 +1,130 @@
+
+.profile-img{
+    margin-top: 17px;
+    width:100px;
+    height: 100px;
+}
+.circle{
+    border: 1px rgb(204, 204, 204) solid;
+}
 .container{
     margin-top: 0 !important;
 }
 body{
+
+        
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-attachment: fixed;
+    }
+
+.nav{
+    background-color:#0a3f7b  !important;
+}
+.img{
+    background-color: #efefee !important;
+    width: 130px !important;
+    height: 64px !important;
     
 }
+.imgg{
+    margin-top: 5px !important;
+}
+.li a{
+    background-color: #efefee !important;
+    color: #0a3f7b !important;
+}
+.phone a{
+    background-color: #efefee !important;
+    color: #0a3f7b !important;
+}
+.li a:hover{
+    background-color:#0a3f7b  !important;
+    color: #efefee !important;
+}
+
+.phone a:hover{
+    background-color:#0a3f7b  !important;
+    color: #efefee !important;
+}
+
+nav.nav ul li a  {
+  transition: all 1s;
+}
+
+
+nav.nav ul li a :after {
+  text-align: left;
+  content: '';
+  margin: 0;
+  opacity: 0;
+}
+
+nav.nav ul li a :hover {
+  color: #fff;
+  z-index: 1;
+}
+
+nav.nav ul li a :hover:after {
+  z-index: -10;
+  animation: fill 0,5s forwards;
+  -webkit-animation: fill 0,5s forwards;
+  -moz-animation: fill 0,5s forwards;
+  opacity: 1;
+}
+ul.sidenav li a  {
+  transition: all 1s;
+}
+ul.sidenav li a :after {
+  text-align: left;
+  content: '';
+  margin: 0;
+  opacity: 0;
+}
+ul.sidenav li a :hover {
+  color: #fff;
+  z-index: 1;
+}
+ul.sidenav li a :hover:after {
+  z-index: -10;
+  animation: fill 0,5s forwards;
+  -webkit-animation: fill 0,5s forwards;
+  -moz-animation: fill 0,5s forwards;
+  opacity: 1;
+}
+
+  
+  nav nav {
+    width: 80%;
+    margin: 0 auto;
+    background: #fff;
+    
+    box-shadow: 0px 5px 0px #dedede;
+  }
+  nav ul {
+    list-style: none;
+    text-align: center;
+  }
+  nav ul li {
+    display: inline-block;
+  }
+  nav ul li a {
+    display: block;
+    
+    text-decoration: none;
+    color: #aaa;
+    font-weight: 800;
+    text-transform: uppercase;
+   
+  }
+  nav ul li a,
+  nav ul li a:after,
+  nav ul li a:before {
+    transition: all .5s;
+  }
+  nav ul li a:hover {
+    color: #555;
+  }
+  .sidenav{
+      background-color:#efefee !important;
+  }

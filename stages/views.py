@@ -1,28 +1,25 @@
 from django.shortcuts import redirect, render
-from .models import *
-from formateurs.models import Formateur
 
-from stagiaire.models import Document, Stagiaire
+from stages.models import *
+from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.contrib import messages
 # Create your views here.
 
 
-login_required='/login/'
+login_required='/accounts/login/'
 
 def show(request):
-    stages=Stage.objects.all()
-       
+    stages=Stage.objects.all()   
     return render(request,'stages/show.html',{'stages':stages})
 
 
 def create_axe_tache(request):
     if request.user.is_authenticated:
         if request.POST:
-
-             owner_name= request.user
-             obj=request.POST
-             if obj['stage_title'] and obj['description-stage'] and obj['cahiercharge-stage']:
+            owner_name= request.user
+            obj=request.POST
+            if obj['stage_title'] and obj['description-stage'] and obj['cahiercharge-stage']:
                 formateur =Formateur.objects.get(user=owner_name)
             
                 stage=Stage(sujet=obj['stage_title'],description_du_stage=obj['description-stage'].replace('\n',' '),formateure=formateur)
@@ -32,11 +29,11 @@ def create_axe_tache(request):
                 charges.save()
         else:
             messages.info(request, "s'il vous plait ajouter un stage !!!")
-            print('empty')
-            return render(request,'stages/create_taches.html',context={'charges':charges})
+            #return render(request,'stages/create_taches.html',context={'charges':charges})
         return render(request,'stages/create_stage.html')
     else:
         return redirect(login_required)    
+
 
 
 
@@ -62,25 +59,53 @@ def stage_taches(request,id):
 
 def get_stage_details(request,id):
     stage=Stage.objects.get(pk=id)
-    cahiercharge=stage.cahiercharge
     
-    context={'stage':stage,'charge':cahiercharge}
+    
+    context={'stage':stage,}
     return render(request,'stages/stage_details.html',context )
 
 
 def demande_stage(request):
-    if request.POST and request.user.is_authenticated and request.user.is_stagiaire:
-        stagiaire=Stagiaire.objects.get(user=request.user)
-        stage=Stage.objects.get(pk=request.POST['id'])
-        print(request.FILES["cv"])
-        print(stagiaire)
-        print(stage)
-        document=Document()
-        document.stagiaire=stagiaire
-        document.cv=request.FILES["cv"]
-        document.save()
-        demande=Demande(stagiaire=stagiaire,stage=stage)
-        demande.save()
-        return redirect('/')
+    if  request.user.is_authenticated and request.user.is_stagiaire :
+        if request.POST and not request.is_ajax():
+            if request.FILES.get("docs") is not None:
+                stagiaire=Stagiaire.objects.get(user=request.user)
+                
+                stage=Stage.objects.get(pk=request.POST['id'])
+                
+                document=Document()
+                document.stagiaire=stagiaire
+                document.cv=request.FILES["cv"]
+                document.save()
+                demande=Demande(stagiaire=stagiaire,stage=stage)
+                demande.save()
+                send_mail(
+                '',
+                f"\t Bonjour {stagiaire.user.last_name} {stagiaire.user.first_name} \n Vous avez postulé à l'annonce {stage.sujet} le {demande.created.strftime('%b %d %Y %H:%M:%S')}",
+                User.objects.get(username='admin').email,
+                [ request.user.email ],
+                fail_silently=False,
+                )
+            return redirect('/')
+        elif request.POST and request.is_ajax():
+            stagiaire=Stagiaire.objects.get(user=request.user)
+            stage=Stage.objects.get(pk=request.POST['id']) 
+            doc=Demande.objects.filter(stagiaire_id=stagiaire.user_id ,stage_id=stage.id)
+            print(doc,"hhhhhhhhhhhhhhhhhhhhhhhhh")
+            if len(doc)>0:
+                return JsonResponse({'data':'vous avez déjà postulé à ce stage '+stage.sujet}) 
+            demande=Demande(stagiaire=stagiaire,stage=stage)
+            demande.save()
+            
+            send_mail(
+            '',
+            f"\t Bonjour {stagiaire.user.last_name} {stagiaire.user.first_name}. \n Vous avez postulé à l'annonce {stage.sujet} ,le {demande.created.strftime('%b %d %Y %H:%M:%S')}",
+            User.objects.get(username='admin').email,
+            [ request.user.email ],
+            fail_silently=False,
+            )
+            return JsonResponse({'data':'votre demande est en cours de traitment'})  
     else:
         return redirect(login_required) 
+
+

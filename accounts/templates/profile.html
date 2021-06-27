@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+    <script src="{% static 'javaScripts.js '%}" defer></script>
+{% endblock %}
+{% block content %}
+
+    <body class="blue lighten-5">
+  
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal" style="height:900px !important;">
+    <form action="/accounts/edite/profile/" method="post" enctype="multipart/form-data">
+    <div class="modal-content">
+      {% csrf_token %}
+        <div class="file-field input-field">
+            <div class="btn">
+              <span>Fimage</span>
+              <input type="file" name="avatar" >
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" type="text" placeholder="modifier l'image du profile ">
+            </div>
+          </div>
+          
+          <div class="file-field input-field">
+            <div class="btn">
+              <span>CV</span>
+              <input type="file" name="docs">
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" type="text" placeholder="ajoutter un cv " >
+            </div>
+          </div>
+          
+        <div class="row">
+
+            <div class="input-field col s6">
+              <input id="first_name" type="text" name="first_name" value="{{profile.user.user.first_name}}">
+              <label for="first_name">First Name</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="last_name" type="text" name="last_name" value="{{profile.user.user.last_name}}">
+              <label for="last_name">Last Name</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6">
+                <i class="material-icons prefix">phone</i>
+                {% if profile.user.user.is_stagiaire %}
+                <input id="icon_telephone" type="tel" name="telephone" value="{{profile.user.user.stagiaire.phone_number}}">
+                {% else %}
+                <input id="icon_telephone" type="tel" name="telephone" value="{{profile.user.user.formateur.phone_number}}">
+
+                {% endif %}
+                <label for="icon_telephone">Telephone</label>
+            </div>
+            <div class="input-field col s6">
+                <i class="material-icons prefix">linkedin</i>
+                <input id="icon_telephone" type="text" name="linkedin" value="{{profile.linkedin}}">
+                <label for="icon_telephone">linkedin</label>
+              </div>      
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="email" type="email" name="email" value="{{profile.user.user.email}}">
+              <label for="email">Email</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+                <textarea id="textarea1" class="materialize-textarea" name="bio">{{profile.bio}}</textarea>
+                <label for="textarea1">À propos de moi:</label>
+            </div>      
+          </div>
+          <div class="center-align">
+            <button type="submit" class=" waves-effect waves-green btn light-blue">Editer profile</button>
+          </div>
+    </div>
+    
+    </form>
+  </div>
+
+        <div class="container center-align">
+            <div class="row center-align" style="margin-top: 20px;">
+               <div class="col l4 m12 card center-align" >
+                 <div class="card-content" >
+                   <div class="">
+                       <div class="row">
+                           <div class="col l12 s12">
+                                <img src="{{profile.avatar.url}}" style="height: 130px;width: 125px;" alt="" class="center-align circle responsive-img z-depth-4"> 
+                           </div>
+                           {% if profile.user.user.username == user.username %}
+                           <div class="col l12 s12">
+                               <button class="waves-effect waves-light  modal-trigger blue lighten-1 btn" data-target="modal1" ><i class="material-icons right">edite</i> edite your profile</button>
+                           </div>
+                           
+                           {% endif %}
+                       </div>
+                    </div>
+                    <div class="left-align">
+                        <ul>
+                            <li><h6 {% if profile.user.user.stagiaire.is_active %} class=" tooltipped " data-position="bottom" data-tooltip="vous étes un stagiaire active" {% endif %}><b>{{profile.user.user.last_name}} {{profile.user.user.first_name}}</b>{% if profile.user.user.stagiaire.is_active %} <i class="material-icons">check_circle</i> {% endif %}</h6></li>
+                            <li> 
+                                {% if profile.user.user.is_stagiaire %}
+                                {% if profile.user.user.stagiaire.is_active %}
+                                <P>Stage:  {{stage.sujet}}</P>
+                                {% else %}
+                                <b>Aucun stage</b>
+                                {% endif %}
+                                {% else %}
+                                <b>Formateur </b>
+                                {% endif %}
+                            </li>
+                            <li>
+                                
+                                {% if profile.user.user.is_stagiaire %}
+                                Specialite: <b> {{profile.user.user.stagiaire.specialite}}</b>
+                                {% else %}
+                                Specialite: <b>{{profile.user.user.formateur.specialite}}</b>
+                                {% endif %}
+                            </li>
+                            <li>
+                                
+                               <b><i class="fab fa-linkedin"></i> linkedin:{% if profile.linkedin %}  <a href="{{profile.linkedin}}" target="_blank">{{profile.user.user.username}}</a>{% else %}<a class="waves-effect waves-light modal-trigger" href="#modal1">ajoutter votre linkedin</a>{% endif %} </b> 
+                            </li>
+                            <li>
+                                {% if profile.user.user.is_stagiaire %}
+                                <i class="fas fa-phone"></i><b>téléphone: {{profile.user.user.stagiaire.phone_number}} </b> 
+                                {% else %}
+                                <i class="fas fa-phone"></i><b>téléphone: {{profile.user.user.formateur.phone_number}} </b> 
+                                {% endif %}
+                             </li>
+                             <li>
+                               <b><p> Email:</b>{{profile.user.user.email}}</p>
+                             </li>
+                        </ul>
+                    </div>   
+                 </div>
+               </div>
+               
+                  <div class="col l7 m12 s12 card " style="margin-left: 3px;">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col l4 right-align"><b>À propos de moi:</b></div>
+                            <div class="col l8 left-align"><p>{% if profile.bio %}{{profile.bio}}{% else %} <a class="waves-effect waves-light btn modal-trigger" href="#modal1">presentez vous</a> {% endif %}</p>  </div>
+                            
+                        </div>
+                        {% if profile.user.user.is_stagiaire %}
+                        <div class="row">
+                            <div class="col l4 right-align"><b>Curriculum Vitae (cv):</b></div>
+                            <div class="col l8 left-align"><button class="btn "><a class="" target="_blank" href="{{profile.user.user.stagiaire.document.cv.url}}">cv</a></button></div>
+                            
+                        </div>
+                        {% endif %}
+                            
+                            
+                            
+                    </div>
+                  </div>
+                  
+            </div>
+        {% if user.id == stage.formateur_id or user.id == stage.stagiaire_id %}
+            {% if axes %}
+            <div class="row">
+                <div class="card col l10 s12">
+                    <div class="">
+                        <div class="card-content details">
+                            {% for key,value in axes.items %}
+                                <div  id="axe{{key.id}}">
+                                    <div class="row">
+                                        <div class="col l6 s8">
+                                            <h3>{{ key }}</h3>    
+                                        </div>
+                                    </div>
+                                </div> 
+                                <ul class=" collapsible popout z-depth-5">
+                                   {% if value %} 
+                                    {% for tache in value %}
+    
+                                    <li class="active" id="list{{tache.id}}">
+                                    <div class="collapsible-header">
+                                        <i class="material-icons">filter_drama</i>{{key}}
+                                    
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <span>
+                                            <p>
+                                                <label>
+                                                    <span>{{tache.descrptionTache}}</span>
+                                                </label>
+                                            </p>
+                                        </span>
+                                    </div>
+                                    </li>
+                                    {% endfor %}
+                                    {% endif %}
+                                </ul>
+                                {% endfor %} 
+                        </div>
+                   </div>
+                </div>
+            </div>
+          
+           
+            {% endif %}
+            {% endif %}
+            
+            {% if stages %}
+        <table class="highlight ">
+            <thead>
+                <tr>
+                    <th>stage</th>
+                    <th>type du stage</th>
+                    <th>etat</th>
+                    <th>créer le </th>
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for stage in stages %}
+                <tr>
+                    <td>{{stage.sujet}}</td>
+                    <td>{{stage.type_de_stage}}</td>
+                    <td>{% if stage.occupe %}stage occupé{% else %}stage non occupé{% endif %}</td>
+                    <td>{{stage.created}}</td>
+
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>  
+        {% endif %}
+
+        </div>
+    </div>
+    </body>
+{% endblock %} 

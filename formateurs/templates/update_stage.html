@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <script src="{% static 'stages/script.js' %}" defer></script>
+{% endblock %}
+
+{% block content%} 
+<div class="container center-align">
+    {% if stages %}
+        <table class="highlight responsive-table ">
+            <thead>
+                <tr>
+                    <th>stage</th>
+                    <th>type du stage</th>
+                    <th>etat</th>
+                    <th>créer le </th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for stage in stages %}
+                <!-- Modal Structure -->
+        <div style="height: 700px !important;" id="stage{{stage.id}}" class="modal ">
+            <form  action="/update_stage/{{stage.id}}" method="POST" >
+            <div class="modal-content">
+            
+            
+                {% csrf_token %}
+                <div class="row">
+                    <div class="input-field col s6">
+                    <input placeholder="Sujet du stage" id="stage_sujet" type="text" class="validate" name="stage_sujet" value="{{stage.sujet}}">
+                    <label for="stage_sujet">Sujet :</label>
+                    </div>
+                    <div class="input-field col s6">
+                    <input placeholder="Type du stage" id="stage_type" type="text" class="validate" name="stage_type" value="{{stage.type_de_stage}}">
+                    <label for="stage_tipe">Type du stage :</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                    <input placeholder="durée du stage" id="duree" type="text" class="validate" name="duree" value="{{stage.duree}}">
+                    <label for="duree">Durée du stage</label>
+                    </div>
+                    <div class="input-field col s6">
+                    <input placeholder="Nombre du stagiaires" id="Nombre_du_stagiaires" type="number" class="validate" name="Nombre_du_stagiaires" value="{{stage.nombre_de_stagiaire}}">
+                    <label for="Nombre_du_stagiaires">Nombre du stagiaires</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                    <p>
+                        <label>
+                        <input name="remunere" type="radio" {% if not stage.remunere %}checked{% endif %}  value="False" />
+                        
+                        <span>Non rémunéré</span>
+                        </label>
+                    </p>
+                    </div>
+                    <div class="input-field col s6">  
+                    <p>
+                        <label>
+                        <input name="remunere" type="radio"{% if stage.remunere %}checked{% endif %} value="True"/>
+                        <span>Rémunéré</span>
+                        </label>
+                    </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                    <textarea id="description-stage" class="materialize-textarea" name="description-stage" value="">{{stage.description_du_stage}}</textarea>
+                    <label for="description-stage">Description du stage</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                    <textarea id="description-stage" class="materialize-textarea" name="cahiercharge-stage" value="">{{stage.cahiercharge.cahierCharge}}</textarea>
+                    <label for="cahiercharge-stage">cahier des charges</label>
+                    </div>
+                </div>
+                
+                <div class=" center ">
+                    <button class="btn waves-effect waves-light" type="submit" >Update
+                        <i class="material-icons right">send</i>
+                    </button>
+                  </div>
+            
+            </div>
+            
+          
+            
+            </form>
+            </div> 
+            <!-- Modal Structure to send cv  -->
+            
+            <!-- ********************table rows********************** -->
+                <tr>
+                    <td>{{stage.sujet}}</td>
+                    <td>{{stage.type_de_stage}}</td>
+                    <td>{% if stage.stagiaire %}{{ stage.stagiaire }}{% else %}non occupé{% endif %}</td>
+                    <td>{{stage.created}}</td>
+                    <td><button data-target="stage{{stage.id}}" class="btn modal-trigger">update</button></td>
+                    <td><div><form class="delete-form" action="/delete_stage/{{stage.id}}" method="POST">{% csrf_token %}<button class="btn red ">Delete</button></form></div></td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>    
+        
+        
+
+                
+                
+            
+        
+        {% else %}
+        <div class="row">
+            <div class="col s12 ">
+            <div class="card  darken-1">
+                <div class="card-content blue-grey-text">
+                <h1 class="card-content">Vous n'avez pas encore créer un stage <a href="/formateur/create_stage/">créer un...</a></h1>
+                </div>
+            </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% block footer %}
+
+
+{% endblock footer %}  
+{% endblock %}

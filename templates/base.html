@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- <link rel="icon" type="image/png" sizes="16x20" href="{% static 'logo-dark.png' %}"> -->
+<!--  -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,74 +14,85 @@
          {% block scripts %}
 
          {% endblock scripts %}
+         
         <title>{% block title%}{% endblock %}</title>
+        <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">  
 </head>
-<body>
+<body style="background-image: url({% static 'bg.jpeg' %});">
   
-  
+  <nav class="nav">
 
-  
-
-  <nav>
-    <div class="container">
-    <div class="nav-wrapper">
-        
-            <a href="/" class="brand-logo">Logo</a>
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="/">home</a></li>
-                {% if user.is_formateur and user.is_authenticated %}
-                <li><a href="#">mon profile</a></li>
-            
-                <li><a href="#"> mes stages</a></li>
-                <li><a href="/stagiaires"> mes stagiaires</a></li>
-                <li><a href="/demandes">Demandes</a></li>
-                {% elif user.is_stagiaire and user.is_authenticated%}
-                <li><a href="/create_axe">mon profile</a></li>
-                <li><a href="/mon_stage"> mon stage </a></li>
-                {% endif %}
-            
-                {% if user.is_authenticated %}
-                <li><a href="/logout">Logout</a></li>
-                {% else %}
-                <li><a href="/login">login</a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
-                {% endif %}
-              
-      
-            </ul>
-        </div>
+          <div class="nav-wrapper">
    
-    </div>
+                  <a href="/" class="brand-logo"><div class="img center-align"><img src="{%  static 'logo-dark.png' %}" alt="notre logo" width="110px" class="imgg"></div></a>
+
+                  <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                  <ul class="right hide-on-med-and-down">
+                      <li class="li"><a href="/">home</a></li>
+                      {% if user.is_formateur and user.is_authenticated %}
+                      <li class="li"><a href="/accounts/profile/{{user.username}}">mon profile</a></li>
+                  
+                      <li class="li"><a href="/formateur/mes_stages"> mes stages</a></li>
+                      <li class="li"><a href="/formateur/stagiaires"> mes stagiaires</a></li>
+                      <li class="li"><a href="/formateur/demandes">Demandes</a></li>
+                      {% elif user.is_stagiaire and user.is_authenticated%}
+                      <li class="li"><a href="/accounts/profile/{{user.username}}">mon profile</a></li>
+                      <li class="li"><a href="/stagiaire/mon_stage"> mon stage </a></li>
+                      {% endif %}
+                  
+                      {% if user.is_authenticated %}
+                      <li class="li"><a href="/accounts/logout">Logout</a></li>
+                      {% else %}
+                      <li class="li"><a href="/accounts/login">login</a></li>
+                      <li class="li"><a class="dropdown-trigger" href="#!" data-target="dropdown1">Sign Up<i class="material-icons right">arrow_drop_down</i></a></li>
+                      {% endif %}
+                    
+            
+                  </ul>
+              </div>
+        
+          </div>
   </nav>
       <!-- Dropdown Structure -->
 <ul id="dropdown1" class="dropdown-content">
-    <li><a href="/formateur_register">formateur </a></li>
-    <li><a href="/stagiaire_register">stagiaire</a></li>
+    <li><a href="/accounts/formateur_register">formateur </a></li>
+    <li><a href="/accounts/stagiaire_register">stagiaire</a></li>
 </ul>
 <ul id="dropdown2" class="dropdown-content">
-    <li><a href="/formateur_register">formateur </a></li>
-    <li><a href="/stagiaire_register">stagiaire</a></li>
+    <li><a href="/accounts/formateur_register">formateur </a></li>
+    <li><a href="/accounts/stagiaire_register">stagiaire</a></li>
 </ul>
 
-  <ul class="sidenav" id="mobile-demo">
-    <li><a href="/">home</a></li>
+  <ul  class="sidenav" id="mobile-demo">
+   
     {% if user.is_formateur and user.is_authenticated %}
-    <li><a href="#">mon profile</a></li>
+    <li class="center-align"><img class="profile-img" src="{{user.formateur.profileformateur.avatar.url}}" style="width:80px; height:80px; margin-top:17px " alt=""></li>
+    
+    <li class="center-align">welcome {{user}}</li>
+        <li class="li"><a href="/">home<i class="material-icons red-text  " style="font-size:25px">home</i></a></li>
 
-    <li><a href="#"> mes stages</a></li>
-    <li><a href="/stagiaires"> mes stagiaires</a></li>
-    <li><a href="/demandes">Demandes</a></li>
+    <li class="li"><a href="/accounts/profile/{{user.username}}">mon profile<i class="material-icons red-text  " style="font-size:25px">account_circle</i></a></li>
+
+    <li class="li" ><a href="/formateur/mes_stages"> mes stages<i class="material-icons red-text  " style="font-size:25px">work_outline</i></a></li>
+    <li class="li"><a href="/formateur/stagiaires"> mes stagiaires<i class="material-icons red-text  " style="font-size:25px">3p</i></a></li>
+    <li class="li"><a href="/formateur/demandes">Demandes<i class="material-icons red-text  " style="font-size:25px">message</i></a></li>
     {% elif user.is_stagiaire and user.is_authenticated%}
-    <li><a href="/create_axe">mon profile</a></li>
-    <li><a href="/mon_stage"> mon stage </a></li>
+    <li class="center-align"><img class="profile-img" src="{{user.stagiaire.profilestagiaire.avatar.url}}" style="width:80px; height:80px; margin-top:17px " alt=""></li>
+    
+    <li class="center-align">welcome {{user}}</li>
+        <li class="li"><a href="/">home<i class="material-icons red-text  " style="font-size:25px">home</i></a></li>
+
+    <li class="li"><a href="/accounts/profile/{{user.username}}">mon profile<i class="material-icons red-text  " style="font-size:25px">account_circle</i></a></li>
+    <li class="li"><a href="/stagiaires/mon_stage"> mon stage <i class="material-icons red-text  " style="font-size:25px">work_outline</i></a></li>
     {% endif %}
 
     {% if user.is_authenticated %}
-    <li><a href="/logout">Logout</a></li>
+    <li class="li"><a href="/accounts/logout">Logout<i class="material-icons red-text  " style="font-size:25px">logout</i></a></li>
     {% else %}
-    <li><a href="/login">login</a></li>
-    <li><a class="dropdown-trigger" href="#!" data-target="dropdown2">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li class="li"><a href="/">home<i class="material-icons red-text  " style="font-size:25px">home</i></a></li>
+
+    <li class="li"><a href="/accounts/login">login<i class="material-icons red-text  " style="font-size:25px">login</i></a></li>
+    <li class="li"><a class="dropdown-trigger" href="#!" data-target="dropdown2">Sign up<i class="material-icons right">arrow_drop_down</i><i class="material-icons red-text  " style="font-size:25px">person_add</i></a></li>
     {% endif %}
 
 
@@ -88,10 +101,17 @@
 
     {% block content%}
 
+
+
+
+
     {% endblock %}
+
+
+
     {% if user.is_formateur %}
  <div class="fixed-action-btn">
-  <a href="/create_stage" class="btn-floating btn-large red">
+  <a href="/formateur/create_stage" class="btn-floating btn-large red">
     <i class="large material-icons">mode_edit</i>
   </a>
   <ul>

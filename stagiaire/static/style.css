@@ -1,3 +1,5 @@
-.flex-container{
-    display: flex !important;
+
+.delete-form{
+    display: inline;
+    height: 20px;
 }

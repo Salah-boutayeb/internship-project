@@ -4,7 +4,7 @@
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <script src="{% static 'scriptsfunc.js' %}" defer></script>
+    <script src="{% static 'javas.js' %}" defer></script>
 {% endblock %}
 {% block content%}
 <div class="container">
@@ -12,8 +12,8 @@
     <!-- Modal Structure -->
     <div id="modal2" class="modal">
         <div class="modal-content">
-            <h4>ajouer les axes du voter stage</h4>
-            <form action="/create_tache/" method="POST">
+            <h4>Ajoutter les taches du voter axe</h4>
+            <form action="/stagiaire/create_tache/" method="POST">
                 {% csrf_token %}
                 <div id="box-tache-title">
 
@@ -23,8 +23,7 @@
         </div>
         
         <div class="modal-footer">
-            
-            
+   
             <button class="btn" onclick="addtache()"><i class="material-icons">add</i></button>
             <button class="btn" onclick="removetache()"><i class="material-icons">remove</i></button>
         </div>
@@ -34,7 +33,7 @@
   <div id="modal1" class="modal">
     <div class="modal-content">
         <h4>ajouer les axes du voter stage</h4>
-        <form action="/create_axes/" method="POST">
+        <form action="/stagiaire/create_axes/" method="POST">
             {% csrf_token %}
             <div id="box">
 
@@ -51,6 +50,7 @@
         <div class="col s12  l4">
             <h2>{{ stage.sujet }}</h2>
             <p>{{cahiercharge}}</p>
+            
         </div>
         <div class="col s12  l8">
             <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
@@ -59,7 +59,7 @@
     <div class="row">
         <div class="card">
             <div class="row">
-                <div class="clo center-align">
+                <div class="col center-align">
                     <a class="waves-effect waves-light btn modal-trigger" href="#modal1">creer axe</a>
                 </div>
             </div>
@@ -67,35 +67,123 @@
                 {% for key,value in axes.items %}
                 {% if key %}
                 <div class="row">
-                    <div class="col l6 s8">
-                         <h3>{{ key }}</h3>    
-                    </div>
-                    <div class="col l6 s4">
-                    <button type="" data-target="modal2" class="btn  waves-effect waves-light modal-trigger" value="{{key}}" onclick="getAxe(this.value)"><i class="material-icons">add</i></button>
+                    <!-- update axe modal -->
+                    <div id="axe_modal{{key.id}}" class="modal">
+                        <div class="modal-content">
+                            <h4>ajouer les axes du voter stage</h4>
+                            <form action="/update_axe/{{key.id}}" method="POST">
+                                {% csrf_token %}
+                                <div class="input-field col s12">
+                                    <input  type="text"   name="axe" value="{{key.title}}">
+                                    <label class="active" for="axe"></label>
+                                </div>
+                                <button class="btn" type="submit" ><i class="material-icons">send</i></button>
+                            </form>
+                        </div>    
+                    <!-- ****************************************** -->
                     </div>
                 </div>
-                {% else %}
-                {% endif %}
-                <ul class=" collapsible popout z-depth-5">
-                    {% if value %}
-                    {% for tache in value %}
+                <div  id="axe{{key.id}}">
+                    <div class="row">
+                        <div class="col l6 s8">
+                             <h3>{{ key }}</h3>    
+                        </div>
+                        
+                        <div class="col l6 s4">
+                        <button type="" data-target="modal2"  class="btn  waves-effect waves-light modal-trigger" value="{{key}}" onclick="getAxe(this.value)"><i class="material-icons">add</i></button>
+                        <button class="btn red"  onclick="delete_axe(this.value)" value="{{key.id}}">Delete</button>    
+                        <button data-target="axe_modal{{key.id}}" class="btn  waves-effect waves-light modal-trigger"></button>
+                    </div>
+                    </div>
                     
-                    <li class="active">
-                    <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{key}}</div>
-                    <div class="collapsible-body">
-                        <form action=""><input type="checkbox" onclick="validate()" value="{{tache.id}}" {% if tache %} /></form<span>{{tache.descrptionTache}}</span></div>
-                    </li>
+                    {% endif %}
+                    <ul class=" collapsible popout z-depth-5">
+                        {% if value %}
+                        {% for tache in value %}
+                        <!-- modal for update tache -->
+                        <div id="tache{{tache.id}}" class="modal">
+                            <div class="modal-content">
+                                <h4>ajouer les axes du voter stage</h4>
+                                <form id="form_update{{tache.id}}">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                        <textarea id="tache_id{{tache.id}}" class="materialize-textarea" name="tache" >{{tache.descrptionTache}}</textarea>
+                                        <label for="tache">tache</label>
+                                        </div>
+                                    </div>
+                                    <button class="btn" onclick="update_tache(this.value)" value="{{tache.id}}" >update<i class="material-icons">send</i></button>
+                                </form>
+                            </div>
+                          </div>
+                        <!-- ************************************* -->
+                        <li class="active" id="list{{tache.id}}">
+                        <div class="collapsible-header">
+                            <i class="material-icons">filter_drama</i>{{key}}
+                            <div>
+                                
+                                    <button class="btn red" id="delete{{tache.id}}" onclick="delete_tache(this.value)" value="{{tache.id}}">Delete</button>
+                                
+                            </div>
+                                <button data-target="tache{{tache.id}}" class="btn modal-trigger"></button>
+                            </div>
+                        <div class="collapsible-body">
+                            <span>
+                                <p>
+                                    <label>
+                                        <input type="checkbox"  {% if tache.is_done %} checked {% endif %} onclick="validate(this.value)" value="{{tache.id}}" />
+                                        <span>{{tache.descrptionTache}}</span>
+                                    </label>
+                                </p>
+                            </span>
+                        </div>
+                        </li>
+                
+             
                     {% endfor %}
                     
                     {% endif %}
                 </ul>
+            </div>
                      {% endfor %}
             </div>
         </div>
+        <!-- Modal Structure -->
+<div id="uploadr" class="modal" style="height: 260px;">
+    <div class="modal-content">
+      
+      <h4>Veuillez saisir voter Rapport </h4>
+      <form style="height: 80px;" action="/rapport/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>rapport</span>
+            <input type="file" name="rapport">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Upload one or more files">
+          </div>
+        </div>
+        <div class="card-footer center-align">
+          <button type="submit"  class="btn">Envoyer Votre Rapport</button> 
+        </div>
+      </form>
+    
     </div>
+    </div>
+    <!-- Modal Structure to send rapport  -->
+        <div class="center-align">
 
+            <button class="btn row red large modal-trigger" data-target="uploadr" id="upload">
+                <div class="col l10">envoyez votre rapport</div>
+                <div class="col l2"><i  class="material-icons " >upload</i> </div>
+            </button>
+        </div>
+    </div>
 </div>
 
+{% block footer %}
 
+{% endblock %}
 
 {% endblock %}

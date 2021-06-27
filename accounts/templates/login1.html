@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    
+{% endblock %}
+{% block content%}
+<div class="container  ">
+      <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+        <h5>s'enregistrer comme formateur</h5>
+        <a href="/accounts/formateur_register/" class="">as formateur</a>
+        <h5>s'enregistrer comme stagiaire</h5>
+        <a href="/accounts/stagiaire_register/" class="">as stagiaire</a>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+  </div>
+
+    
+    
+    <div class="card center-align">
+        
+        <div class="card-content">
+            <form method="post" action="" class="" >   
+                {% csrf_token %}
+                    <div class="center ">
+                        <div class="user">
+                            <img src="{% static 'img/user.png' %}" alt="user" width="100" srcset="">
+                            
+                        </div>
+                        <hr>
+                        <div class="center">
+                            
+                            <h4><span  class=" log"> Log</span><span style="border-radius:9px" class="in">in</span></h4>
+                        
+                        </div>
+                            
+        
+                        <div class="row center">
+                            <div class="input-field col s12">
+                                <label for="username">username</label>
+                                <input type="text" class="form-control" name="username" id="username" aria-describedby="" placeholder="username...">
+                                
+                            </div>
+
+                        </div>
+                        <div class="row center">
+                            <div class="input-field col s12">
+                                <label for="exampleInputPassword1">Password</label>
+                            
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
+                            </div>
+
+                        </div>
+                        <div >
+                            <p>If you don't have an account  <a class="waves-effect waves-light  modal-trigger" href="#modal1"><u>signup</u></a></p>
+    
+                        </div>
+                        {% for message in messages %}
+                                <p id="messages">{{message}}</p>
+                            {% endfor %}
+
+                        <div class="btn1">
+                            <button type="submit" value="login" class="btn btn-submit  lighten-2 ">Log in</button>
+                            <input type="hidden" name="next" value="{{ next }}">
+                        </div>
+                    </div>
+                   
+                    
+            </form>
+        </div>
+    
+
+
+</div>
+    
+{% endblock %}

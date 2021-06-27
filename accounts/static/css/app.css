@@ -24,3 +24,38 @@ a {
     
 }
 
+
+.btn1 {
+    margin: 15px ;
+    height: 20px;
+  }
+  .btn-submit:hover {
+    width: 100px;
+    background-color: #efefee!important;
+    color: #0a3f7b !important;
+    border-radius: 14px !important;
+  }
+  .btn-submit {
+    width: 100px;
+    background-color: #0a3f7b !important;
+    color: #efefee !important;
+    border-radius: 14px !important;
+    font-weight: 700;
+  
+  }
+  .log{
+    font-weight: 700;
+    color: #0a3f7b;
+  }
+  .in{
+  color: #d33e11 !important;
+  }
+  
+  hr{
+    width: 35%;
+  
+  }
+  a {
+    text-decoration:#29abe0 ;
+    
+  }
