@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block title %} Home {% endblock %}
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'stages/stylesheet.css' %}">
-    <script src="{% static 'stages/script.js' %}" defer></script>
+    <script src="{% static 'stages/scripts.js' %}" defer></script>
 {% endblock %}
 
 {% block content%} 
@@ -55,11 +55,12 @@
               {% if stage.stagiaire_id == user.id %}
                 <a class="btn" href="/stagiaire/mon_stage/">vos taches</a>
               {% else %}
+              
                 {% if  user.stagiaire.document.cv  %}                 
-                <button type="button" id="demander{{stage.id}}" value="{{stage.id}}" onclick="demander(this.value)" {% if user.stagiaire.is_active %} disabled {% endif %} name="id" class="btn">demande</button> 
+                <button type="button" id="demander{{stage.id}}" value="{{stage.id}}" onclick="demander(this.value)" {% if user.stagiaire.is_active or  stage.occupe %} disabled {% endif %} name="id" class="btn">demande</button> 
                 {% else %}
 
-                <a onclick="M.toast({html: 'veuillez saisir voter CV pour postuler ce stage' ,classes: 'rounded'})" class="waves-effect waves-light btn modal-trigger" href="#modal1">demander ce stage</a>  
+                <a onclick="M.toast({html: 'veuillez saisir voter CV pour postuler ce stage' ,classes: 'rounded'})" class="waves-effect waves-light btn modal-trigger" {% if   stage.occupe %} disabled {% endif %} href="#modal1">demander ce stage</a>  
                 {% endif %}
               {% endif %}
           {% elif user.is_formateur  %}  

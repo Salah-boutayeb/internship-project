@@ -16,7 +16,7 @@ def my_stage(request):
                 if taches:
                     for tache in taches:
                         axe_taches[axe].append(tache)
-            return render(request,'stage_details.html',context={'stage':stage,'cahiercharge':stage.cahiercharge.cahierCharge,"axes":axe_taches})    
+            return render(request,'mon_stage.html',context={'stage':stage,'cahiercharge':stage.cahiercharge.cahierCharge,"axes":axe_taches})    
         return redirect('/')       
     else:
         return redirect('/accounts/login')  

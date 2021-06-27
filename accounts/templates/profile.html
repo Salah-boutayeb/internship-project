@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block title %}mon profile{% endblock %}
 {% block scripts %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
-    <script src="{% static 'javaScripts.js '%}" defer></script>
+    <script src="{% static 'javaS.js '%}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 {% endblock %}
 {% block content %}
 
@@ -105,7 +106,9 @@
                             <li> 
                                 {% if profile.user.user.is_stagiaire %}
                                 {% if profile.user.user.stagiaire.is_active %}
-                                <P>Stage:  {{stage.sujet}}</P>
+                                <P>Stage:  {{stage.sujet}} / formateur: <a href="/accounts/profile/{{profile.user.user.stagiaire.formateur}}">{{profile.user.user.stagiaire.formateur}}</a></P>
+
+                               
                                 {% else %}
                                 <b>Aucun stage</b>
                                 {% endif %}
@@ -123,7 +126,7 @@
                             </li>
                             <li>
                                 
-                               <b><i class="fab fa-linkedin"></i> linkedin:{% if profile.linkedin %}  <a href="{{profile.linkedin}}" target="_blank">{{profile.user.user.username}}</a>{% else %}<a class="waves-effect waves-light modal-trigger" href="#modal1">ajoutter votre linkedin</a>{% endif %} </b> 
+                               <b><i class="fab fa-linkedin"></i> linkedin:{% if profile.linkedin %}  <a href="{{profile.linkedin}}" target="_blank">@{{profile.user.user.last_name}}-{{profile.user.user.first_name}}</a>{% elif user.id == profile.user.user.id or user.id == profile.user.user.id  %}<a class="waves-effect waves-light modal-trigger" href="#modal1">ajoutter votre linkedin</a>{% else %} aucun lien{% endif %} </b> 
                             </li>
                             <li>
                                 {% if profile.user.user.is_stagiaire %}
@@ -133,18 +136,19 @@
                                 {% endif %}
                              </li>
                              <li>
-                               <b><p> Email:</b>{{profile.user.user.email}}</p>
+                              <i class="fas fa-envelope-square"></i><b> Email: {{profile.user.user.email}}</b>
                              </li>
                         </ul>
                     </div>   
                  </div>
                </div>
                
-                  <div class="col l7 m12 s12 card " style="margin-left: 3px;">
-                    <div class="card-content">
+                  <div class="col l7 m12 s12  " style="margin-left: 3px;">
+                    <div class="card row">
+                      <div class="card-content">
                         <div class="row">
                             <div class="col l4 right-align"><b>À propos de moi:</b></div>
-                            <div class="col l8 left-align"><p>{% if profile.bio %}{{profile.bio}}{% else %} <a class="waves-effect waves-light btn modal-trigger" href="#modal1">presentez vous</a> {% endif %}</p>  </div>
+                            <div class="col l8 left-align"><p>{% if profile.bio %}{{profile.bio}}{% elif user.id == profile.user.user.id or user.id == profile.user.user.id  %} <a class="waves-effect waves-light btn modal-trigger" href="#modal1">presentez vous</a>{% else %}empty field{% endif %}</p>  </div>
                             
                         </div>
                         {% if profile.user.user.is_stagiaire %}
@@ -154,18 +158,24 @@
                             
                         </div>
                         {% endif %}
-                            
-                            
-                            
+                      </div> 
+                    </div>
+                    {% if user.id == stage.formateur_id or user.id == stage.stagiaire_id %}
+        
+                    <div class="row">
+                      <div class="col l12 s12 ">
+                        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                      </div>
                     </div>
                   </div>
-                  
+                  {% endif %} 
             </div>
         {% if user.id == stage.formateur_id or user.id == stage.stagiaire_id %}
+        
             {% if axes %}
             <div class="row">
-                <div class="card col l10 s12">
-                    <div class="">
+                <div class="card col l- s12">
+                    
                         <div class="card-content details">
                             {% for key,value in axes.items %}
                                 <div  id="axe{{key.id}}">
@@ -199,8 +209,9 @@
                                 </ul>
                                 {% endfor %} 
                         </div>
-                   </div>
-                </div>
+                   
+              </div>
+              
             </div>
           
            
@@ -238,3 +249,6 @@
     </div>
     </body>
 {% endblock %} 
+{% block footer%}
+
+{% endblock %}

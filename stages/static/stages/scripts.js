@@ -1,5 +1,6 @@
 /*  */
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
+console.log(csrf);
 const demander=(params)=>{
   M.toast({html: "votre demande a été envoyer avec succée"})
     $.ajax({

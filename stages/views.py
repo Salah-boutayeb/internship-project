@@ -59,6 +59,7 @@ def stage_taches(request,id):
 
 def get_stage_details(request,id):
     stage=Stage.objects.get(pk=id)
+    print(stage.formateur.user.username)
     
     
     context={'stage':stage,}
@@ -68,7 +69,7 @@ def get_stage_details(request,id):
 def demande_stage(request):
     if  request.user.is_authenticated and request.user.is_stagiaire :
         if request.POST and not request.is_ajax():
-            if request.FILES.get("docs") is not None:
+            if request.FILES.get("cv") is not None:
                 stagiaire=Stagiaire.objects.get(user=request.user)
                 
                 stage=Stage.objects.get(pk=request.POST['id'])

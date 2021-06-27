@@ -1,13 +1,92 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block title %} {{stage.sujet}} {% endblock %}
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'stages/stylesheet.css' %}">
-    <script src="{% static 'stages/script.js' %}" defer></script>
+    <script src="{% static 'stages/scripts.js' %}" defer></script>
 {% endblock %}
 
 {% block content%} 
-<div class="container center-align">
+<div class="container">
+    <!-- Modal Structure -->
+<div id="modal1" class="modal" style="height: 300px;">
+    <div class="modal-content">
+      <h4>completer votre admission</h4>
+      <p>Veuillez saisir voter CV </p>
+      <form style="height: 80px;" action="stage/demande/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>File</span>
+            <input type="file" name="cv">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Upload one or more files">
+          </div>
+        </div>
+        <div class="center-align">
+          <button type="submit" value="{{stage.id}}" name="id" class="btn">demande</button> 
+        </div>
+      </form>
+    
+    </div>
+    </div>
+    <!-- Modal Structure to send cv  -->
+    <div class="card" style="margin-top: 20px;">
+        <div class="card-content">
+            <div class="card-title">
+                <h3 class="center-align">{{stage.sujet}}</h3>
+                
+            </div>
+            <div class="row card">
+                <div class="card-title">
+                    <div class="col l3 s6"><i class="material-icons"></i>{{stage.type_de_stage}}</div>
+                    <div class="col l3 s6"><i class="material-icons">schedule</i>{{stage.duree}}</div>
+                    <div class="col l3 s6"><i class="material-icons">attach_money</i>{% if stage.remunere %}rémunéré{% else %}non rémunéré{% endif %}</div>
+                    <div class="col l3 s6"><i class="material-icons">groups</i>{{stage.nombre_de_stagiaire}} stagiaire(s)</div>
+                    <div class="card-footer">
+                    
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <b>formateur:</b> <a href="/accounts/profile/{{stage.formateur.user.username}}">@{{stage.formateur}}</a> 
+                <h5 class=""><i  class="material-icons red-text">report_problem</i>{% if stage.occupe %}ce stage n'est plus valable {% endif %}</h5>
+                <h5>déscription:</h5>
+                <p>{{stage.description_du_stage}}</p>
+            </div>
+            <div class="card-footer" style="margin-top: 20px;">
+            
+                {% if  user.is_stagiaire  %}
+                    {% if stage.stagiaire_id == user.id %}
+                      <a class="btn" href="/stagiaire/mon_stage/">vos taches</a>
+                    {% else %}
+                    
+                      {% if  user.stagiaire.document.cv  %}                 
+                      <button type="button" id="demander{{stage.id}}" value="{{stage.id}}" onclick="demander(this.value)" {% if user.stagiaire.is_active or  stage.occupe %} disabled {% endif %} name="id" class="btn">demande</button> 
+                      {% else %}
+      
+                      <a onclick="M.toast({html: 'veuillez saisir voter CV pour postuler ce stage' ,classes: 'rounded'})" class="waves-effect waves-light btn modal-trigger" {% if   stage.occupe %} disabled {% endif %} href="#modal1">demander ce stage</a>  
+                      {% endif %}
+                    {% endif %}
+                {% elif user.is_formateur  %}  
+                  {% if stage.formateure_id == user.id %}
+                  <a class="btn" href="/formateur/mes_stages/">voir tout mes stages</a>
+                  {% endif %}
+                {% else %}
+                
+                <form style="height: 80px;" action="stage/demande/" method="POST">
+                  {% csrf_token %}
+                  <div class="center-align">
+                    <button type="submit" value="{{stage.id}}"  name="id" class="btn">demande</button> 
+                  </div>
+                </form>  
+                {% endif %} 
+                </div>
+
+        </div>
+    </div>
 
 </div>
 {% block footer %}

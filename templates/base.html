@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="{% static 'style.css' %}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
          {% block scripts %}
 
          {% endblock scripts %}
@@ -26,10 +27,11 @@
    
                   <a href="/" class="brand-logo"><div class="img center-align"><img src="{%  static 'logo-dark.png' %}" alt="notre logo" width="110px" class="imgg"></div></a>
 
-                  <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                  <a href="#" data-target="mobile-demo" class="sidenav-trigger"><b><i class="material-icons">menu</i></a>
                   <ul class="right hide-on-med-and-down">
                       <li class="li"><a href="/">home</a></li>
                       {% if user.is_formateur and user.is_authenticated %}
+                      
                       <li class="li"><a href="/accounts/profile/{{user.username}}">mon profile</a></li>
                   
                       <li class="li"><a href="/formateur/mes_stages"> mes stages</a></li>
@@ -66,9 +68,9 @@
   <ul  class="sidenav" id="mobile-demo">
    
     {% if user.is_formateur and user.is_authenticated %}
-    <li class="center-align"><img class="profile-img" src="{{user.formateur.profileformateur.avatar.url}}" style="width:80px; height:80px; margin-top:17px " alt=""></li>
+    <li class="center-align"><img class="profile-img center-align circle responsive-img z-depth-4" src="{{user.formateur.profileformateur.avatar.url}}" style="width:80px; height:80px; margin-top:17px " alt=""></li>
     
-    <li class="center-align">welcome {{user}}</li>
+    <li class="center-align"><b>Welcome {{user}}</b></li>
         <li class="li"><a href="/">home<i class="material-icons red-text  " style="font-size:25px">home</i></a></li>
 
     <li class="li"><a href="/accounts/profile/{{user.username}}">mon profile<i class="material-icons red-text  " style="font-size:25px">account_circle</i></a></li>
@@ -111,9 +113,9 @@
 
     {% if user.is_formateur %}
  <div class="fixed-action-btn">
-  <a href="/formateur/create_stage" class="btn-floating btn-large red">
-    <i class="large material-icons">mode_edit</i>
-  </a>
+  <button  class="btn-floating btn-large red">
+    <i class="material-icons large ">menu</i>
+  </button>
   <ul>
     <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
     <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
@@ -129,10 +131,11 @@
    
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="{% static 'scripts.js' %}"></script>
+    <script src="{% static 'script.js' %}"></script>
     {% block footer %}   
      
      
     {% endblock footer %}
+   
 </body>
 </html>

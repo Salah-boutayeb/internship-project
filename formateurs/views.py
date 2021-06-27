@@ -4,6 +4,12 @@ from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
 from stages.models import *
 
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+
+
 # Create your views here.
 login_required='/accounts/login/'
 def show_demande(request):
@@ -102,7 +108,7 @@ def update_stage(request,id):
                 stage.cahiercharge.cahierCharge=obj['cahiercharge-stage']               
                 stage.save()
                 charges.save()
-        return redirect('/mes_stages/')      
+        return redirect('/formateur/mes_stages/')      
 
 def delete_stage(request,id):
     if request.user.is_authenticated and request.user.is_formateur :    
@@ -111,11 +117,50 @@ def delete_stage(request,id):
            stagiaire=stage.stagiaire
            stagiaire.is_active=False
            stagiaire.formateur_id=None
+           stagiaire.score=0
            stagiaire.save()
            stage.delete()          
-        return redirect('/mes_stages/')        
+        return redirect('/formateur/mes_stages/')        
 
 def mes_stages(request):
     if request.user.is_authenticated and request.user.is_formateur:   
         stages = Stage.objects.filter(formateur_id=request.user.id)    
         return render(request,'update_stage.html',context={'stages':stages})         
+def delete_stagiaire(request):
+     if request.user.is_authenticated and request.user.is_formateur and request.POST :   
+        stage=Stage.objects.get(stagiaire_id=request.POST['id'])
+        stagiaire=stage.stagiaire
+        stage.occupe=False
+        stage.stagiaire=None
+        
+        stagiaire.is_active=False
+        stagiaire.formateur_id=None
+        stagiaire.score=0
+        stagiaire.save()
+        stage.save()
+        return redirect('/formateur/stagiaires/')
+def delete_demande(request):
+     if request.user.is_authenticated and request.user.is_formateur and request.POST :   
+        Demande.objects.get(id=request.POST['id']).delete()
+        
+        return redirect('/formateur/stagiaires/')        
+
+
+def render_pdf_view(request):
+    template_path = 'atestations/atestation.html'
+    context = {'myvar': 'this is your template context'}
+    
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(html, dest=response,)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response

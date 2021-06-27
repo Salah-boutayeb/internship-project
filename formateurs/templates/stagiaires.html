@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block title %} mes stagiaires {% endblock %}
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
-    <script src="" defer></script>
+    <script src="{% static 'javascript/scripts.js' %}" defer></script>
+     
 {% endblock %}
 {% block content%}
 <div class="container  ">
@@ -43,8 +44,12 @@
                 <td>pas encore</td>
                 {% endif %}
                 <td>
-                 <button type="button" class="btn red" value="{{stagiaire.user_id}}" name="id"><i class="material-icons ">remove</i></button> 
-                 <button type="button" class="btn" value="{{stagiaire.user_id}}" {% if stage.stagiaire.score is not 100 %} disabled {% endif %} name="id"><i class="material-icons">send</i></button> 
+                  <form action="/formateur/delete_stagiaire/" method="post">
+                    {% csrf_token %}
+                  <button type="submit" class="btn red"  value="{{stage.stagiaire.user_id}}" name="id"><i class="material-icons ">remove</i></button> 
+
+                  </form>
+                 <button type="button" class="btn" value="{{stage.stagiaire.user_id}}" {% if stage.stagiaire.score is not 100 %} disabled {% endif %} name="id"><i class="material-icons">send</i></button> 
                </td>
               </tr>
               {% endfor %}
@@ -52,7 +57,7 @@
           </table>
           {% else %}
           <div>
-            <h3 class="center-align white-text ">aucun stagiaire stouvé !!! :( voir les demandes <a href="/formateur/demandes/">demandes</a></h3>
+            <h3 class="center-align  ">aucun stagiaire stouvé !!! :( voir les demandes <a href="/formateur/demandes/">demandes</a></h3>
           </div>
         
           {% endif %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block title %} Demandes {% endblock %}
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     <script src="" defer></script>
@@ -24,19 +24,26 @@
                 <th>stagiaire</th> 
                 <th>cv</th> 
                 <th>accepter</th>
+                <th>supprimer</th>
               </tr>
             </thead>
             <tbody>
                 {% for demande in demandes %}
               <tr>
                 <td>{{demande.stage.sujet}}</td>
-                <td>{{demande.stagiaire}}</td>
-                <td><a href="{{ demande.stagiaire.document.cv.url }}" target="_blank">{{ demande.stagiaire.document.cv }}</a></td>
+                <td><a href="/accounts/profile/{{demande.stagiaire}}">{{demande.stagiaire}}</a></td>
+                <td><a href="{{ demande.stagiaire.document.cv.url }}" target="_blank">{{ demande.stagiaire.user.username }}.cv</a></td>
                 <td>
                     <form action="/formateur/demandes/" method="POST">
                     {% csrf_token %}
-                     <button type="submit" class="btn" value="{{demande.id}}" name="id"><i class="material-icons">send</i></button>
+                     <button type="submit" class="btn waves-effect waves-light " value="{{demande.id}}" name="id"><i class="material-icons">send</i></button>
                     </form>
+               </td>
+               <td>
+                <form action="/formateur/demande_suprimer/" method="POST">
+                  {% csrf_token %}
+                   <button type="submit" class="btn waves-effect red waves-light " value="{{demande.id}}" name="id"><i class="material-icons">delete</i></button>
+                  </form>
                </td>
               </tr>
               {% endfor %}

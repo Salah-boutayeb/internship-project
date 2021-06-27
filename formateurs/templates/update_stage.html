@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block title %} mes stages {% endblock %}
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     <script src="{% static 'stages/script.js' %}" defer></script>
@@ -26,7 +26,7 @@
                 {% for stage in stages %}
                 <!-- Modal Structure -->
         <div style="height: 700px !important;" id="stage{{stage.id}}" class="modal ">
-            <form  action="/update_stage/{{stage.id}}" method="POST" >
+            <form  action="/formateur/update_stage/{{stage.id}}" method="POST" >
             <div class="modal-content">
             
             
@@ -104,7 +104,7 @@
                     <td>{% if stage.stagiaire %}{{ stage.stagiaire }}{% else %}non occupé{% endif %}</td>
                     <td>{{stage.created}}</td>
                     <td><button data-target="stage{{stage.id}}" class="btn modal-trigger">update</button></td>
-                    <td><div><form class="delete-form" action="/delete_stage/{{stage.id}}" method="POST">{% csrf_token %}<button class="btn red ">Delete</button></form></div></td>
+                    <td><div><form class="delete-form" action="/formateur/delete_stage/{{stage.id}}" method="POST">{% csrf_token %}<button class="btn red ">Delete</button></form></div></td>
 
                 </tr>
                 {% endfor %}

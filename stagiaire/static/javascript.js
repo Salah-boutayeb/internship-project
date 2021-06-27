@@ -4,7 +4,7 @@ let axe=document.getElementById('sendTaches')
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
 let count=0
 let counttache=0
-console.log('shiit');
+
 function getAxe(params) {
     axe.value=params
     console.log(axe.value);
