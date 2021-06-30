@@ -4,10 +4,10 @@
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <script src="{% static 'javascript.js' %}" defer></script>
+    <script src="{% static 'javascripts.js' %}" defer></script>
 {% endblock %}
 {% block content%}
-<div class="container">
+<div class="container" >
       <!-- Modal Trigger -->
     <!-- Modal Structure -->
     <div id="modal2" class="modal">
@@ -48,7 +48,7 @@
   </div>
     <div class="row">
         <div class="col s12  l4">
-            <h2>{{ stage.sujet }}</h2>
+            <h4>{{ stage.sujet }}</h4>
             <p>{{cahiercharge}}</p>
             
         </div>
@@ -59,7 +59,7 @@
     <div class="row">
         <div class="card">
             <div class="row">
-                <div class="col center-align">
+                <div class="col ">
                     <a class="waves-effect waves-light btn modal-trigger" href="#modal1">creer axe</a>
                 </div>
             </div>
@@ -85,15 +85,15 @@
                 </div>
                 <div  id="axe{{key.id}}">
                     <div class="row">
-                        <div class="col l6 s8">
+                        <div class="col l3 s4">
                              <h3>{{ key }}</h3>    
                         </div>
                         
-                        <div class="col l6 s4">
-                        <button type="" data-target="modal2"  class="btn  waves-effect waves-light modal-trigger" value="{{key}}" onclick="getAxe(this.value)"><i class="material-icons">add</i></button>
-                        <button class="btn red"  onclick="delete_axe(this.value)" value="{{key.id}}">Delete</button>    
-                        <button data-target="axe_modal{{key.id}}" class="btn  waves-effect waves-light modal-trigger"></button>
-                    </div>
+                        <div class="col l9 s8" style="margin-top: 40px !important;">
+                        <button type="" data-target="modal2"  class="btn  btn-small waves-effect waves-light modal-trigger" value="{{key}}" onclick="getAxe(this.value)"><i class="material-icons">add</i></button>
+                        <button class="btn red btn-small"  onclick="delete_axe(this.value)" value="{{key.id}}"><i class="material-icons">delete</i></button>    
+                        <button data-target="axe_modal{{key.id}}" class="btn  btn-small waves-effect waves-light modal-trigger" style="width: 48px;"><i class="material-icons" >edite</i></button>
+                        </div>
                     </div>
                     
                     {% endif %}
@@ -112,20 +112,28 @@
                                         <label for="tache">tache</label>
                                         </div>
                                     </div>
-                                    <button class="btn" onclick="update_tache(this.value)" value="{{tache.id}}" >update<i class="material-icons">send</i></button>
+                                    <button class="btn  btn-small" onclick="update_tache(this.value)" value="{{tache.id}}" >update<i class="material-icons">send</i></button>
                                 </form>
                             </div>
                           </div>
                         <!-- ************************************* -->
                         <li class="active" id="list{{tache.id}}">
-                        <div class="collapsible-header">
-                            <i class="material-icons">filter_drama</i>{{key}}
-                            <div>
-                                
-                                    <button class="btn red" id="delete{{tache.id}}" onclick="delete_tache(this.value)" value="{{tache.id}}">Delete</button>
-                                
-                            </div>
-                                <button data-target="tache{{tache.id}}" class="btn modal-trigger"></button>
+                        <div class="collapsible-header row">
+                            <div class="row">
+                                    <div class="col s2 l4 valign-wrapper left-align">
+                                        <i class="material-icons">task_alt</i>
+                                    </div>
+                                    <div class="col s5 l4 ">
+                                        
+                                         <h4>{{key}}</h4>
+                                    </div>
+                                </div>
+                                <div class="col s5 l4 m4">
+                                    <div>
+                                        <button class=" btn-small red"style="width: 48px;" onclick="delete_tache(this.value)" value="{{tache.id}}"><i style="margin-left: -6px;" class="material-icons">delete</i></button>
+                                        <button data-target="tache{{tache.id}}" style="width: 48px;" class="btn v modal-trigger"> <i style="margin-left: -6px;" class="material-icons">edite</i></button>
+                                    </div>
+                                </div>  
                             </div>
                         <div class="collapsible-body">
                             <span>
@@ -153,8 +161,8 @@
     <div class="modal-content">
       
       <h4>Veuillez saisir voter Rapport </h4>
-      <form style="height: 80px;" action="/rapport/" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+      <form style="height: 80px;" action="/stagiaire/rapport/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %} 
         <div class="file-field input-field">
           <div class="btn">
             <span>rapport</span>
@@ -165,7 +173,7 @@
           </div>
         </div>
         <div class="card-footer center-align">
-          <button type="submit"  class="btn">Envoyer Votre Rapport</button> 
+          <button type="submit"  class="btn  btn-small">Envoyez Votre Rapport</button> 
         </div>
       </form>
     
@@ -174,7 +182,7 @@
     <!-- Modal Structure to send rapport  -->
         <div class="center-align">
 
-            <button class="btn row red large modal-trigger" data-target="uploadr" id="upload">
+            <button class="btn row red  btn-small large modal-trigger" data-target="uploadr" id="upload">
                 <div class="col l10">envoyez votre rapport</div>
                 <div class="col l2"><i  class="material-icons " >upload</i> </div>
             </button>

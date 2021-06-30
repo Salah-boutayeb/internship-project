@@ -56,9 +56,7 @@ def profiles(request,name):
 		user=User.objects.get(username=name)
 		if user.is_stagiaire:
 			profile=ProfileStagiaire.objects.get(user_id=user.id)
-			
 			axe_taches={}
-
 			if  profile.user.user.stagiaire.is_active:
 				stage = Stage.objects.get(stagiaire_id=user.id)
 				axes=Axe.objects.filter(cahierCharge_id=stage.id)
@@ -68,12 +66,12 @@ def profiles(request,name):
 					if taches:
 						for tache in taches:
 							axe_taches[axe].append(tache)
-				return render(request,'profile.html',context={"profile":profile,"stage":stage ,"axes":axe_taches})
-			return render(request,'profile.html',context={"profile":profile})
+				return render(request,'profile.html',context={"profile":profile,"stage":stage ,"axes":axe_taches})	
 		else:
 			profile=ProfileFormateur.objects.get(user_id=user.id)	
 			stages = Stage.objects.filter(formateur_id=user.id)  
 			return render(request,'profile.html',context={"profile":profile,"stages":stages})				
+		return render(request,'profile.html',context={"profile":profile})	
 	else :
 		return redirect('/accounts/login')
 

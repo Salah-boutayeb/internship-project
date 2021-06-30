@@ -21,7 +21,7 @@ def my_stage(request):
     else:
         return redirect('/accounts/login')  
 
-""" def create_tache(request):
+def create_tache(request):
     if request.POST and request.user.is_stagiaire and request.user.stagiaire.is_active:
         obj=request.POST     
         stage = Stage.objects.get(stagiaire_id=request.user.id)
@@ -31,19 +31,8 @@ def my_stage(request):
             if tache != 'csrfmiddlewaretoken' and tache != 'axe' and obj[tache] != '':
                 Tache.objects.create(descrptionTache=obj[tache],axe_id=axe.id)
         
-        return redirect('/stagiaire/mon_stage/') """
-def create_tache(request):
-    if request.POST and request.user.is_stagiaire and request.user.stagiaire.is_active:
-        obj=request.POST     
-        stage = Stage.objects.get(stagiaire_id=request.user.id)
-        axes=Axe.objects.filter(cahierCharge_id=stage.id)
-        for axe in axes: 
-            if axe.title==obj['axe']:
-                for tache in obj:
-                    if tache != 'csrfmiddlewaretoken' and tache != 'axe' and obj[tache] != '':
-                        Tache.objects.create(descrptionTache=obj[tache],axe_id=axe.id)
-        
         return redirect('/stagiaire/mon_stage/')
+
 def create_axes(request):
     if request.POST and request.user.is_stagiaire and request.user.stagiaire.is_active:
         obj=request.POST
@@ -56,12 +45,14 @@ def create_axes(request):
                 else:
                     print('eeeeeeee')
                     Axe.objects.create(title=obj[key],cahierCharge_id=stage.id)
-        return redirect('/stagiaire/mon_stage/')    
+        return redirect('/stagiaire/mon_stage/')  
+    return redirect('/')      
 
 def getprogress(request):
-    if request.user.is_authenticated and request.user.is_stagiaire and request.is_ajax():
-        done=0
-        not_done=100
+    done=0
+    not_done=100
+    if request.user.is_authenticated  and request.is_ajax():
+       
         totale=0
         stage = Stage.objects.get(stagiaire_id=request.user.id)
         axes=stage.cahiercharge.axe_set.all()
@@ -80,8 +71,9 @@ def getprogress(request):
             stagiaire = Stagiaire.objects.get(user_id=request.user.id)
             stagiaire.score=done
             stagiaire.save()                       
-        return JsonResponse({'data':{'progress':[{'done':done},{'not done':not_done}],
-        'done':done}})
+        return JsonResponse({'data':{'progress':[{'done':done},{'not done':not_done}],'done':done}})
+    else:
+        return JsonResponse({'data':{'progress':[{'done':done},{'not done':not_done}]}})
 
 def validate_tache(request,id):
     if request.POST and request.is_ajax() and request.user.is_stagiaire and request.user.stagiaire.is_active:

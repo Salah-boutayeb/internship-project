@@ -52,7 +52,7 @@
             </div>
             <div class="row">
                 <b>formateur:</b> <a href="/accounts/profile/{{stage.formateur.user.username}}">@{{stage.formateur}}</a> 
-                <h5 class=""><i  class="material-icons red-text">report_problem</i>{% if stage.occupe %}ce stage n'est plus valable {% endif %}</h5>
+                <h5 class="">{% if stage.occupe %}<i  class="material-icons red-text">report_problem</i>ce stage n'est plus valable {% endif %}</h5>
                 <h5>déscription:</h5>
                 <p>{{stage.description_du_stage}}</p>
             </div>
@@ -76,7 +76,7 @@
                   {% endif %}
                 {% else %}
                 
-                <form style="height: 80px;" action="stage/demande/" method="POST">
+                <form style="height: 80px;" action="/stage/demande/" method="POST">
                   {% csrf_token %}
                   <div class="center-align">
                     <button type="submit" value="{{stage.id}}"  name="id" class="btn">demande</button> 

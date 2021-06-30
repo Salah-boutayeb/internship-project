@@ -19,7 +19,7 @@
         <title>{% block title%}{% endblock %}</title>
         <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">  
 </head>
-<body style="background-image: url({% static 'bg.jpeg' %});">
+<body style="background-image: url({% static 'bg.jpeg' %});" {% if profile %} onload="getProgress({{profile.user.user.id}})" {% endif %} >
   
   <nav class="nav">
 
@@ -70,7 +70,7 @@
     {% if user.is_formateur and user.is_authenticated %}
     <li class="center-align"><img class="profile-img center-align circle responsive-img z-depth-4" src="{{user.formateur.profileformateur.avatar.url}}" style="width:80px; height:80px; margin-top:17px " alt=""></li>
     
-    <li class="center-align"><b>Welcome {{user}}</b></li>
+    <li class="center-align"><h5>Welcome @{{user}}</h5></li>
         <li class="li"><a href="/">home<i class="material-icons red-text  " style="font-size:25px">home</i></a></li>
 
     <li class="li"><a href="/accounts/profile/{{user.username}}">mon profile<i class="material-icons red-text  " style="font-size:25px">account_circle</i></a></li>
@@ -79,13 +79,13 @@
     <li class="li"><a href="/formateur/stagiaires"> mes stagiaires<i class="material-icons red-text  " style="font-size:25px">3p</i></a></li>
     <li class="li"><a href="/formateur/demandes">Demandes<i class="material-icons red-text  " style="font-size:25px">message</i></a></li>
     {% elif user.is_stagiaire and user.is_authenticated%}
-    <li class="center-align"><img class="profile-img" src="{{user.stagiaire.profilestagiaire.avatar.url}}" style="width:80px; height:80px; margin-top:17px " alt=""></li>
+    <li class="center-align"><img class="profile-img center-align circle responsive-img z-depth-4" src="{{user.stagiaire.profilestagiaire.avatar.url}}" style="width:80px; height:80px; margin-top:17px " alt=""></li>
     
     <li class="center-align">welcome {{user}}</li>
         <li class="li"><a href="/">home<i class="material-icons red-text  " style="font-size:25px">home</i></a></li>
 
     <li class="li"><a href="/accounts/profile/{{user.username}}">mon profile<i class="material-icons red-text  " style="font-size:25px">account_circle</i></a></li>
-    <li class="li"><a href="/stagiaires/mon_stage"> mon stage <i class="material-icons red-text  " style="font-size:25px">work_outline</i></a></li>
+    <li class="li"><a href="/stagiaire/mon_stage"> mon stage <i class="material-icons red-text  " style="font-size:25px">work_outline</i></a></li>
     {% endif %}
 
     {% if user.is_authenticated %}
@@ -112,17 +112,20 @@
 
 
     {% if user.is_formateur %}
- <div class="fixed-action-btn">
-  <button  class="btn-floating btn-large red">
-    <i class="material-icons large ">menu</i>
-  </button>
-  <ul>
-    <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
-    <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-    <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
-    <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-  </ul>
-</div>
+    <div class="fixed-action-btn">
+      <a class="btn-floating  red btn tooltipped btn-large cyan pulse" data-position="left" data-tooltip="menu">
+        <i class="large material-icons">dashboard</i>
+      </a>
+      <ul>
+        <li><a href="/formateur/create_stage" class="btn-floating red btn tooltipped" data-position="left" data-tooltip="créer stage"><i class="large material-icons">mode_edit</i></a></li>
+        <li><a href="/formateur/demandes" class="btn-floating yellow darken-1 btn tooltipped" data-position="left" data-tooltip="les demandes"><i class="large material-icons">mark_as_unread</i></a></li>
+        <li><a href="/formateur/stagiaires" class="btn-floating green btn tooltipped" data-position="left" data-tooltip="les stagiaires"><i class="material-icons">group</i></a></li>
+        <li><a href="/accounts/profile/{{user.username}}" class="btn-floating blue btn tooltipped" data-position="left" data-tooltip="mon profile"><i class="material-icons">account_circle</i></a></li>
+        <li><a href="/"class="btn-floating blue btn tooltipped" data-position="left" data-tooltip="acceuille"><i class="material-icons">home</i></a></li>
+      </ul>
+    </div>
+    
+
    {% endif %}
     
    

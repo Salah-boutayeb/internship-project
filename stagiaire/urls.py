@@ -7,7 +7,7 @@ urlpatterns=[
     path('create_axes/',create_axes),
     path('create_tache/',create_tache),
     path('mon_stage/',my_stage),
-    path('my_progress',getprogress),
+    path('my_progress/',getprogress),
     path('my_progress/<int:id>',validate_tache),
     path('update_tache/<int:id>',update_tache),
     path('delete_tache/<int:id>',delete_tache),

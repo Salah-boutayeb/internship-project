@@ -129,6 +129,8 @@ def mes_stages(request):
 def delete_stagiaire(request):
      if request.user.is_authenticated and request.user.is_formateur and request.POST :   
         stage=Stage.objects.get(stagiaire_id=request.POST['id'])
+        stage.cahiercharge.axe_set.all().delete()
+
         stagiaire=stage.stagiaire
         stage.occupe=False
         stage.stagiaire=None
@@ -138,6 +140,12 @@ def delete_stagiaire(request):
         stagiaire.score=0
         stagiaire.save()
         stage.save()
+        send_mail("notifications d'exclusion",
+            f"\t\t Bonjour {stagiaire.user.last_name} {stagiaire.user.first_name}.\n nous excusons  de vous informer que vous étes exclus du stage '{stage.sujet}' , vu que vous n'avez pas encore commencer votre project,ainsi que vous n'avez pas respecter la date pour nous envoyer votre rapport  .\n BON CHANCE.",
+            User.objects.get(id=request.user.id).email,
+            [ stagiaire.user.email ],
+            fail_silently=False,
+            )
         return redirect('/formateur/stagiaires/')
 def delete_demande(request):
      if request.user.is_authenticated and request.user.is_formateur and request.POST :   
@@ -146,21 +154,42 @@ def delete_demande(request):
         return redirect('/formateur/stagiaires/')        
 
 
-def render_pdf_view(request):
-    template_path = 'atestations/atestation.html'
-    context = {'myvar': 'this is your template context'}
-    
-    # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="report.pdf"'
-    
-    # find the template and render it.
-    template = get_template(template_path)
-    html = template.render(context)
+def stagiaireprogress(request,id):
+    done=0
+    not_done=100
+    if request.user.is_authenticated  and request.is_ajax():
+       
+        totale=0
+        stage = Stage.objects.get(stagiaire_id=id)
+        axes=stage.cahiercharge.axe_set.all()
+        if axes:
+            for axe in axes :
+                totale+=axe.tache_set.all().count()
+                taches=axe.tache_set.all()
+                if taches:
+                    for tache in taches:
+                        if tache.is_done:
+                            done=done+1
+            if totale==0:
+                totale=1                
+            done=(done/totale)*100
+            not_done-=done 
+            stagiaire = Stagiaire.objects.get(user_id=id)
+            stagiaire.score=done
+            stagiaire.save()                       
+        return JsonResponse({'data':{'progress':[{'done':done},{'not done':not_done}],'done':done}})
+    else:
+        return JsonResponse({'data':{'progress':[{'done':done},{'not done':not_done}]},'id':id})    
 
-    # create a pdf
-    pisa_status = pisa.CreatePDF(html, dest=response,)
-    # if error then show some funy view
-    if pisa_status.err:
-       return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    return response
+
+def send_attestation(request):
+    if request.user.is_authenticated and request.user.is_formateur and request.POST:
+        if request.FILES.get("attestation") is not None:
+            attestation=request.FILES['attestation']
+            stag_id = request.POST['id']
+            doc=Document.objects.get(stagiaire_id=stag_id)
+            doc.attestation=attestation
+            doc.save()
+        return redirect('/formateur/stagiaires')    
+    else:
+        return redirect('/')    

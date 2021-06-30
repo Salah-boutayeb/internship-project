@@ -37,6 +37,8 @@ class Document(models.Model):
     stagiaire= models.OneToOneField(Stagiaire,on_delete=models.CASCADE ,primary_key = True)
     cv= models.FileField( blank=True,upload_to='cvs')
     rapport = models.FileField( blank=True,upload_to='rapports')
+
+    attestation = models.FileField( blank=True,upload_to='attestation')
     def __str__(self):
         return self.stagiaire.user.username + ": documents "        
 

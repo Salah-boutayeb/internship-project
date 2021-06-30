@@ -13,7 +13,8 @@ urlpatterns=[
     path('delete_stage/<int:id>',delete_stage),
     path('delete_stagiaire/',delete_stagiaire),
     path('mes_stages/',mes_stages),
-    path('test/',render_pdf_view),
+    path('stagiaire_progress/<int:id>',stagiaireprogress),
+    path('attestation_stagiaire/',send_attestation),
 
     
     

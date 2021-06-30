@@ -31,8 +31,11 @@ class StagiaireSignUpForm(UserCreationForm):
         user.save()
         stagiaire = Stagiaire.objects.create(user=user)
         stagiaire.specialite=spec
+
         stagiaire.phone_number=self.cleaned_data.get('phone_number')
         stagiaire.save()
+        Document.objects.create(stagiaire=stagiaire)
+        
         return user
     
 class FormateurSignUpForm(UserCreationForm):

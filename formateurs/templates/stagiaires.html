@@ -3,26 +3,47 @@
 {% block title %} mes stagiaires {% endblock %}
 {% block scripts %}
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
-    <script src="{% static 'javascript/scripts.js' %}" defer></script>
+    <script src="{% static 'javascript/script.js' %}" defer></script>
      
 {% endblock %}
 {% block content%}
-<div class="container  ">
+<div class="container">
+  <div id="sendAttestation" class="modal" style="height: 300px;">
+    <div class="modal-content">
+      <h4>Envoyer attestation</h4>
+      
+      <form style="height: 40px;" action="/formateur/attestation_stagiaire/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>attestation</span>
+            <input type="file" name="attestation">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="ajoutter l'attestation">
+          </div>
+        </div>
+        <div class="center-align">
+          <button type="submit" id="attestation" value="" name="id" class="btn">envoyez</button> 
+        </div>
+      </form>
+    
+    </div>
+    </div>
   <div class="fixed-action-btn">
     <a id="menu" href="/create_stage/" class="waves-effect btn-large waves-light btn btn-floating"  ><i class="material-icons">add</i></a>
   </div>
-<div class="row center-align ">
+  <div class="row center-align ">
     <div class="center-align">
       <div class=" card  darken-4   ">
         <div class="card-content">
-          <span class="card-title">Les Stagiaires</span>
+          <span class="card-title">Mes Stagiaires</span>
           {% if stages %}
           <table class="responsive-table centered">
             <thead>
               <tr>
                 <th>stagiaire</th>
                   <th>stage</th>
-                  
                   <th>cv</th>
                   <th>son progrès</th>
                   <th>rapport</th>
@@ -48,16 +69,17 @@
                     {% csrf_token %}
                   <button type="submit" class="btn red"  value="{{stage.stagiaire.user_id}}" name="id"><i class="material-icons ">remove</i></button> 
 
-                  </form>
-                 <button type="button" class="btn" value="{{stage.stagiaire.user_id}}" {% if stage.stagiaire.score is not 100 %} disabled {% endif %} name="id"><i class="material-icons">send</i></button> 
-               </td>
+                  
+                 <button type="button" class="btn modal-trigger" value="{{stage.stagiaire.user.id}}" onclick="getStagiaire(this.value)" data-target="sendAttestation"{% if stage.stagiaire.score is not 100 %}  disabled {% endif %}><i class="material-icons">send</i></button> 
+                  
+                </td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
           {% else %}
           <div>
-            <h3 class="center-align  ">aucun stagiaire stouvé !!! :( voir les demandes <a href="/formateur/demandes/">demandes</a></h3>
+            <h3 class="center-align  ">aucun stagiaire stouvé voir les  <a href="/formateur/demandes/" class="btn waves-effect waves-light btn-large ">demandes</a></h3>
           </div>
         
           {% endif %}
@@ -68,12 +90,8 @@
       </div>
     </div>
   </div>
-
-
 </div>
-    {% block footer %}
-    <script>
-        
-    </script>
-    {% endblock footer %}
+
+{% block footer %}
+{% endblock footer %}
 {% endblock %}

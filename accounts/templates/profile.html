@@ -3,12 +3,11 @@
 {% block title %}mon profile{% endblock %}
 {% block scripts %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
-    <script src="{% static 'javaS.js '%}" defer></script>
+    <script src="{% static 'scripts.js '%}" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 {% endblock %}
 {% block content %}
 
-    <body class="blue lighten-5">
   
   <!-- Modal Structure -->
   <div id="modal1" class="modal" style="height:900px !important;">
@@ -17,14 +16,14 @@
       {% csrf_token %}
         <div class="file-field input-field">
             <div class="btn">
-              <span>Fimage</span>
+              <span>image</span>
               <input type="file" name="avatar" >
             </div>
             <div class="file-path-wrapper">
               <input class="file-path validate" type="text" placeholder="modifier l'image du profile ">
             </div>
           </div>
-          
+          {% if profile.user.user.is_stagiaire %}
           <div class="file-field input-field">
             <div class="btn">
               <span>CV</span>
@@ -34,7 +33,7 @@
               <input class="file-path validate" type="text" placeholder="ajoutter un cv " >
             </div>
           </div>
-          
+          {% endif %}
         <div class="row">
 
             <div class="input-field col s6">
@@ -113,7 +112,7 @@
                                 <b>Aucun stage</b>
                                 {% endif %}
                                 {% else %}
-                                <b>Formateur </b>
+                                <i class="material-icons">supervisor_account</i> <b>Formateur </b>
                                 {% endif %}
                             </li>
                             <li>
@@ -126,7 +125,7 @@
                             </li>
                             <li>
                                 
-                               <b><i class="fab fa-linkedin"></i> linkedin:{% if profile.linkedin %}  <a href="{{profile.linkedin}}" target="_blank">@{{profile.user.user.last_name}}-{{profile.user.user.first_name}}</a>{% elif user.id == profile.user.user.id or user.id == profile.user.user.id  %}<a class="waves-effect waves-light modal-trigger" href="#modal1">ajoutter votre linkedin</a>{% else %} aucun lien{% endif %} </b> 
+                               <b><i class="fab fa-linkedin"></i> linkedin:{% if profile.linkedin %}  <a href="{{profile.linkedin}}" target="_blank">@{{profile.user.user.last_name}}-{{profile.user.user.first_name}}</a>{% elif user.id == profile.user.user.id  %}<a class="waves-effect waves-light modal-trigger" href="#modal1">ajoutter votre linkedin</a>{% else %} aucun lien{% endif %} </b> 
                             </li>
                             <li>
                                 {% if profile.user.user.is_stagiaire %}
@@ -153,8 +152,9 @@
                         </div>
                         {% if profile.user.user.is_stagiaire %}
                         <div class="row">
-                            <div class="col l4 right-align"><b>Curriculum Vitae (cv):</b></div>
-                            <div class="col l8 left-align"><button class="btn "><a class="" target="_blank" href="{{profile.user.user.stagiaire.document.cv.url}}">cv</a></button></div>
+                            <div class="col l6 s12 right-align"><b>Curriculum Vitae (cv):{% if profile.user.user.stagiaire.document.cv %}  <a href="{{profile.user.user.stagiaire.document.cv.url}}" target="_blank">{{profile.user.user.last_name}}-{{profile.user.user.first_name}}.CV</a>{% elif user.id == profile.user.user.id  %}<a class="waves-effect waves-light modal-trigger" href="#modal1">ajoutter votre cv</a>{% else %} aucun cv{% endif %} </b> </b></div>
+                            
+                            <div class="col l6 s12 right-align"><b>Attestation:{% if profile.user.user.stagiaire.document.attestation %}  <a href="{{profile.user.user.stagiaire.document.attestation.url}}" target="_blank">{{profile.user.user.last_name}}-{{profile.user.user.first_name}}.attestation</a>{% elif user.id == profile.user.user.id  %}<a class="waves-effect waves-light modal-trigger" href="#modal1">ajoutter votre cv</a>{% else %} aucun cv{% endif %} </b> </b></div>
                             
                         </div>
                         {% endif %}
@@ -177,28 +177,30 @@
                 <div class="card col l- s12">
                     
                         <div class="card-content details">
-                            {% for key,value in axes.items %}
+                           
                                 <div  id="axe{{key.id}}">
-                                    <div class="row">
-                                        <div class="col l6 s8">
-                                            <h3>{{ key }}</h3>    
+                                    <div class="row ">
+                                        <div class="col l12">
+                                               <h4>Avancement du stage/stagiaire</h4>
                                         </div>
                                     </div>
                                 </div> 
+                               {% for key,value in axes.items %}
                                 <ul class=" collapsible popout z-depth-5">
                                    {% if value %} 
                                     {% for tache in value %}
     
                                     <li class="active" id="list{{tache.id}}">
                                     <div class="collapsible-header">
-                                        <i class="material-icons">filter_drama</i>{{key}}
+                                     <h5>{{ key }}</h5> 
                                     
                                     </div>
                                     <div class="collapsible-body">
                                         <span>
                                             <p>
                                                 <label>
-                                                    <span>{{tache.descrptionTache}}</span>
+                                                  
+                                                    <span>{% if tache.is_done %} <i class="material-icons">task_alt</i> {% endif %}{{tache.descrptionTache}}</span>
                                                 </label>
                                             </p>
                                         </span>
@@ -247,7 +249,6 @@
 
         </div>
     </div>
-    </body>
 {% endblock %} 
 {% block footer%}
 

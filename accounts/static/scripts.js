@@ -1,14 +1,14 @@
-console.log('rrrrrrrrrrrr');
-const getProgress=()=>{
+
+const getProgress=(params)=>{
   
     $.ajax({
         type: 'GET',
-        url:`/stagiaire/my_progress`,
+        url:`/formateur/stagiaire_progress/${params}`,
         success: (response)=>{
           let xValues =[]
           let yValues =[]
             const progress = response.data.progress
-            
+            console.log(progress);
             progress.forEach(element => {
 
               xValues.push(Object.keys(element))
@@ -32,7 +32,7 @@ const getProgress=()=>{
                 
                 title: {
                   display: true,
-                  text: "Progress"
+                  text: "my progress"
                 }
               }
             }) 
@@ -44,4 +44,6 @@ const getProgress=()=>{
         },
     })
 }
-getProgress()
+
+
+
